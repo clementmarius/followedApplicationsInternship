@@ -49,12 +49,9 @@ async function getUserWithId(userId) {
     }
 }
 
-async function getAllUserId(userId) {
+async function getAllUserId() {
     try {
         const findAllUser = await prisma.user.findMany({
-            where: {
-                id:userId,
-            },
             include: {
                 profile: true,
             }
