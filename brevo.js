@@ -1,4 +1,4 @@
-const { Sendim } = require("sendim");
+/* const { Sendim } = require("sendim");
 const { SendimBrevoProviderConfig, SendimBrevoProvider } = require("sendim-brevo");
 
 const globalForSendim = global;
@@ -32,3 +32,4 @@ const sendEmail = async ({ to, sender, subject, message }) => {
 };
 
 module.exports = { sendEmail };
+ */
