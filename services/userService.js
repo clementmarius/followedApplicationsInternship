@@ -96,6 +96,19 @@ async function updateExistingUser(email, newEmail, newPassword) {
 
 async function deleteUserById(userId) {
     try {
+        // Suppression des applications liées à l'utilisateur
+        await prisma.application.deleteMany({
+            where: {
+                userId: userId, // Suppression des applications de cet utilisateur
+            },
+        });
+
+        await prisma.profile.deleteMany({
+            where: {
+                userId: userId, // Suppression du profil de cet utilisateur
+            },
+        });
+
         // Suppression de l'utilisateur avec toutes ses relations
         const deletedUser = await prisma.user.delete({
             where: {
@@ -105,17 +118,6 @@ async function deleteUserById(userId) {
                 profile: true, // Inclure le profil pour le supprimer aussi
             },
         });
-
-        // Si vous avez d'autres tables liées, supprimez également les données associées ici
-        // Exemple : supprimer les applications liées
-        await prisma.application.deleteMany({
-            where: {
-                userId: userId, // Suppression des applications de cet utilisateur
-            },
-        });
-
-        // En fonction de votre modèle, supprimez d'autres relations si nécessaire
-        // await prisma.resume.deleteMany({ where: { userId: userId } });
 
         return deletedUser;
     } catch (error) {
