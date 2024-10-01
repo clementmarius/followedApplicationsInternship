@@ -48,9 +48,25 @@ async function findAllUserById(req, res) {
 
 }
 
+async function updateUser(req, res) {
+    const { email, newEmail, newPassword } = req.body;
+
+    try {
+        const updatedUser = await userService.updateExistingUser(email, newEmail, newPassword);
+
+        res.status(200).json(updatedUser);
+        console.log('User updated:', updateUser);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+}
+
 
 module.exports = {
     createUser,
     findUserById,
     findAllUserById,
+    updateUser,
 };
