@@ -94,10 +94,43 @@ async function updateExistingUser(email, newEmail, newPassword) {
     }
 }
 
+async function deleteUserById(userId) {
+    try {
+        // Suppression des applications liées à l'utilisateur
+        await prisma.application.deleteMany({
+            where: {
+                userId: userId, // Suppression des applications de cet utilisateur
+            },
+        });
+
+        await prisma.profile.deleteMany({
+            where: {
+                userId: userId, // Suppression du profil de cet utilisateur
+            },
+        });
+
+        // Suppression de l'utilisateur avec toutes ses relations
+        const deletedUser = await prisma.user.delete({
+            where: {
+                id: userId,
+            },
+            include: {
+                profile: true, // Inclure le profil pour le supprimer aussi
+            },
+        });
+
+        return deletedUser;
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        throw new Error('Could not delete user');
+    }
+}
+
 
 module.exports = {
     createUserProfile,
     getUserWithId,
     getAllUserId,
     updateExistingUser,
+    deleteUserById,
 }

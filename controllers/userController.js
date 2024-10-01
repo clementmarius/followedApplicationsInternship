@@ -63,10 +63,26 @@ async function updateUser(req, res) {
 
 }
 
+async function removeUser(req, res) {
+    const userId = parseInt(req.params.id);
+
+    console.log(`Request to delete user with ID: ${userId}`);
+
+    try {
+        const deletedUser = await userService.deleteUserById(userId);
+        res.status(200).json({ message: 'User deleted successfully', deletedUser });
+
+        console.log('Deleted user:', deletedUser);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 
 module.exports = {
     createUser,
     findUserById,
     findAllUserById,
     updateUser,
+    removeUser,
 };
