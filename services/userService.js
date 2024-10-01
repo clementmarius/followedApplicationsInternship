@@ -49,7 +49,26 @@ async function getUserWithId(userId) {
     }
 }
 
+async function getAllUserId(userId) {
+    try {
+        const findAllUser = await prisma.user.findMany({
+            where: {
+                id:userId,
+            },
+            include: {
+                profile: true,
+            }
+        });
+
+        return findAllUser;
+    } catch (error) {
+        console.error('Error cannot get all users id:', error);
+        throw new Error('Could not get users id');
+    }
+}
+
 module.exports = {
     createUserProfile,
     getUserWithId,
+    getAllUserId,
 }

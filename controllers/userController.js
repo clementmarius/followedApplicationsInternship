@@ -37,9 +37,22 @@ async function findUserById(req, res) {
     }
 }
 
+async function findAllUserById(req, res) {
+    const usersById = parseInt(req.params.id);
+
+    try {
+        const usersId = await userService.getAllUserId(usersById);
+        res.status(201).json(usersById);
+        console.log('Users Id :', usersId);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+}
 
 
 module.exports = {
     createUser,
     findUserById,
+    findAllUserById,
 };
