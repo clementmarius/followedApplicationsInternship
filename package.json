@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.20.0",
+    "bcrypt": "^5.1.1",
     "express": "^4.21.0",
     "nodemon": "^3.1.7",
-    "prisma": "^5.20.0"
+    "prisma": "^5.20.0",
+    "sendim": "^1.2.172"
   }
 }

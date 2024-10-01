@@ -6,6 +6,12 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Middleware pour logger les requêtes
+app.use((req, res, next) => {
+    console.log(`${req.method} request for ${req.url}`);
+    next();
+});
+
 app.get('/', (req, res) => {
     res.send('Hello World');  
 });
@@ -14,11 +20,8 @@ app.post('/submit-form', (req, res) => {
     res.send('Form submitted');
 });
 
-// Middleware pour logger les requêtes
-app.use((req, res, next) => {
-    console.log(`${req.method} request for ${req.url}`);
-    next();
-});
+// Utilisation des routes pour le profil
+app.use('/profile', require('./routes/userRoutes'));
 
 const port = 3000;
 
