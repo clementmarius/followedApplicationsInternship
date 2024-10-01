@@ -64,8 +64,40 @@ async function getAllUserId() {
     }
 }
 
+async function updateExistingUser(email, newEmail, newPassword) {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { email: email },
+        });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        let hashedPassword = user.password;
+        if (newPassword) {
+            hashedPassword = await bcrypt.hash(newPassword, 10);
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { email: email },
+            data: {
+                email: newEmail || email, 
+                password: hashedPassword, 
+            },
+        });
+
+        return updatedUser;
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw new Error('Could not update user');
+    }
+}
+
+
 module.exports = {
     createUserProfile,
     getUserWithId,
     getAllUserId,
+    updateExistingUser,
 }
