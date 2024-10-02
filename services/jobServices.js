@@ -40,6 +40,30 @@ async function createJobAdvertisement(jobData) {
     }
 }
 
+
+async function getJobWithId(params) {
+    
+}
+
+async function getAllJobId(params) {
+    
+}
+
+
+async function updateExistingJob(params) {
+    
+}
+
+
+async function deleteJObById(params) {
+    
+}
+
 module.exports = {
     createJobAdvertisement,
+    getJobWithId,
+    getAllJobId,
+    getAllJobId,
+    updateExistingJob,
+    deleteJObById
 }
