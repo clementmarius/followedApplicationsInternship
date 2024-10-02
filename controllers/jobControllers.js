@@ -60,10 +60,38 @@ async function deleteJob(req, res) {
     }
 }
 
+async function filterAndSortJobs(req, res) {
+    const { company, jobType, title, sortField, sortOrder } = req.query;
+
+    const filters = {
+        company,
+        jobType,
+        title,
+    };
+
+    const sort = {
+        field: sortField,
+        order: sortOrder,
+    };
+
+    console.log('Filters:', filters);
+    console.log('Sort:', sort);
+
+    try {
+        const jobs = await jobService.filterAndSortJobAdvertisements(filters, sort);
+        res.status(200).json(jobs);
+        console.log('Filtered and sorted jobs:', jobs);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+        console.error('Error filtering and sorting jobs:', error);
+    }
+}
+
 module.exports = {
     createJob,
     findJobById,
     getAllJobs,
     updateJob,
-    deleteJob
+    deleteJob,
+    filterAndSortJobs
 };

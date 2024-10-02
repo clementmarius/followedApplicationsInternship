@@ -145,10 +145,70 @@ async function deleteJobAdvertisement(jobId) {
     }
 }
 
+async function filterAndSortJobAdvertisements(filters, sort) {
+    try {
+        const where = {};
+
+        if (filters.company) {
+            where.company = {
+                name: {
+                    contains: filters.company,
+                    mode: 'insensitive', 
+                },
+            };
+        }
+
+        if (filters.jobType) {
+            where.jobType = {
+                type: filters.jobType,
+            };
+        }
+
+        if (filters.title) {
+            where.title = {
+                contains: filters.title,
+                mode: 'insensitive',
+            };
+        }
+
+
+        const orderBy = [];
+
+        if (sort.field && sort.order) {
+            orderBy.push({
+                [sort.field]: sort.order,
+            });
+        }
+
+        if (!orderBy.length) {
+            orderBy.push({
+                id: 'desc', 
+            });
+        }
+
+        const jobs = await prisma.jobAdvertisement.findMany({
+            where,
+            include: {
+                company: true,
+                jobType: true,
+                applications: true,
+            },
+            orderBy,
+        });
+
+        return jobs;
+    } catch (error) {
+        console.error('Error filtering and sorting job advertisements:', error);
+        throw new Error('Could not filter and sort job advertisements');
+    }
+}
+
+
 module.exports = {
     createJobAdvertisement,
     getJobAdvertisementById,
     getAllJobAdvertisements,
     updateJobAdvertisement,
-    deleteJobAdvertisement
+    deleteJobAdvertisement,
+    filterAndSortJobAdvertisements
 }
