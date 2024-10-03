@@ -1,4 +1,4 @@
-const applicationService = require('../services/applicationService');
+const applicationService = require('../services/applicationServices');
 
 async function formingApplication(req, res) {
     const userId = req.user.id; 
