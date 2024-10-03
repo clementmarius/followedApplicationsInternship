@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 
 const app = express();
@@ -20,11 +21,9 @@ app.post('/submit-form', (req, res) => {
     res.send('Form submitted');
 });
 
-// Utilisation des routes pour le profil
 app.use('/profile', require('./routes/userRoutes'));
-
-// Utilisation des routes pour les jobs
 app.use('/job', require('./routes/jobRoutes'));
+app.use('application', require('./routes/applicationRoutes'));
 
 
 const port = 3000;
