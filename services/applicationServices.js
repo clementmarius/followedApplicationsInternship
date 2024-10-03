@@ -27,6 +27,84 @@ async function createApplication(userId, applicationData) {
     }
 }
 
+async function getUserApplications(userId) {
+    try {
+        const applications = await prisma.application.findMany({
+            where: { userId },
+            include: {
+                jobAdvertisement: {
+                    include: {
+                        company: true,
+                        jobType: true,
+                    },
+                },
+            },
+            orderBy: { appliedAt: 'desc' },
+        });
+
+        return applications;
+    } catch (error) {
+        console.error('Error fetching user applications:', error);
+        throw new Error('Could not fetch applications');
+    }
+}
+
+
+async function updateApplicationStatus(applicationId, newStatus, userId) {
+    try {
+        const application = await prisma.application.findUnique({
+            where: { id: applicationId },
+        });
+
+        if (!application) {
+            throw new Error('Candidature non trouvée');
+        }
+
+        if (application.userId !== userId) {
+            throw new Error('Non autorisé à modifier cette candidature');
+        }
+
+        const updatedApplication = await prisma.application.update({
+            where: { id: applicationId },
+            data: { status: newStatus },
+        });
+
+        return updatedApplication;
+    } catch (error) {
+        console.error('Error updating application status:', error);
+        throw new Error('Could not update application status');
+    }
+}
+
+
+async function deleteApplication(applicationId, userId) {
+    try {
+        const application = await prisma.application.findUnique({
+            where: { id: applicationId },
+        });
+
+        if (!application) {
+            throw new Error('Candidature non trouvée');
+        }
+
+        if (application.userId !== userId) {
+            throw new Error('Non autorisé à supprimer cette candidature');
+        }
+
+        const deletedApplication = await prisma.application.delete({
+            where: { id: applicationId },
+        });
+
+        return deletedApplication;
+    } catch (error) {
+        console.error('Error deleting application:', error);
+        throw new Error('Could not delete application');
+    }
+}
+
 module.exports = {
     createApplication,
+    getUserApplications,
+    updateApplicationStatus,
+    deleteApplication
 }
