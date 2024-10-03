@@ -23,7 +23,8 @@ app.post('/submit-form', (req, res) => {
 
 app.use('/profile', require('./routes/userRoutes'));
 app.use('/job', require('./routes/jobRoutes'));
-app.use('application', require('./routes/applicationRoutes'));
+app.use('/application', require('./routes/applicationRoutes'));
+app.use('/login', require('./routes/authRoutes'));
 
 
 const port = 3000;
