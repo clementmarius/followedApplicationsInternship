@@ -21,7 +21,7 @@ const loginUser = async (email, password) => {
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    return token;
+    return { token, user };
 };
 
 module.exports = { loginUser };
