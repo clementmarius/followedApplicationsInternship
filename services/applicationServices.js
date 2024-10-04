@@ -14,6 +14,8 @@ async function createApplication(userId, applicationData) {
             where: { id: jobAdvertisementId },
         });
 
+        console.log('Offre d\'emploi trouvée:', job);
+
         if (!job) {
 
             console.error('Job advertisement not found with id:', jobAdvertisementId);
