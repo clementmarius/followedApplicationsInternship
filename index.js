@@ -3,6 +3,15 @@ const express = require('express');
 
 const app = express();
 
+const timeout = require('connect-timeout'); 
+
+app.use(timeout('30s')); 
+app.use(haltOnTimedout);
+
+function haltOnTimedout(req, res, next) {
+    if (!req.timedout) next();
+}
+
 // Middleware pour analyser les données des formulaires (si nécessaire)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

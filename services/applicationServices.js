@@ -1,24 +1,38 @@
 const prisma = require('../libs/prisma');
 
 async function createApplication(userId, applicationData) {
+
+    console.log('createApplication service called with userId:', userId, 'and applicationData:', applicationData);
+
     try {
         const { jobAdvertisementId, status } = applicationData;
+
+        console.log('Looking for job advertisement with id:', jobAdvertisementId);
+
 
         const job = await prisma.jobAdvertisement.findUnique({
             where: { id: jobAdvertisementId },
         });
 
         if (!job) {
+
+            console.error('Job advertisement not found with id:', jobAdvertisementId);
+
             throw new Error('Offre d\'emploi non trouvée');
         }
+
+        console.log('Job advertisement found, creating application with userId:', userId, 'and jobAdvertisementId:', jobAdvertisementId);
 
         const application = await prisma.application.create({
             data: {
                 userId,
                 jobAdvertisementId,
-                status: status || 'Applied', 
+                status: status || 'Applied',
             },
         });
+
+        console.log('Application created successfully:', application);
+
 
         return application;
     } catch (error) {
