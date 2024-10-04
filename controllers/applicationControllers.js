@@ -1,17 +1,26 @@
 const applicationService = require('../services/applicationServices');
 
 async function formingApplication(req, res) {
-    const userId = req.user.id; 
-    const applicationData = req.body;
-
-    console.log(`User ${userId} is creating a new application.`);
-
     try {
-        const newApplication = await applicationService.createApplication(userId, applicationData);
-        res.status(201).json({ message: 'Candidature créée avec succès', application: newApplication });
-        console.log('Candidature créée:', newApplication);
+        console.log('Controller formingApplication appelé');
+        const userId = req.user.userId; 
+        console.log('User ID récupéré depuis req.user:', userId);
+        
+        const { jobAdvertisementId, status } = req.body;
+        console.log('Données reçues:', { jobAdvertisementId, status });
+
+        if (!userId || !jobAdvertisementId) {
+            console.log('userId ou jobAdvertisementId manquant');
+            return res.status(400).json({ error: 'userId et jobAdvertisementId sont requis' });
+        }
+
+        const application = await applicationService.createApplication(userId, { jobAdvertisementId, status });
+        console.log('Application créée:', application);
+
+        return res.status(201).json(application);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Erreur dans formingApplication:', error);
+        return res.status(500).json({ error: 'Could not create application' });
     }
 }
 
