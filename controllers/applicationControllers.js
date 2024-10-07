@@ -40,34 +40,55 @@ async function getUserAppli(req, res) {
 
 
 async function updateApplication(req, res) {
-    const userId = req.user.id;
-    const applicationId = parseInt(req.params.id);
-    const { status } = req.body;
-
-    console.log(`User ${userId} is updating status of application ${applicationId} to ${status}.`);
-
     try {
-        const updatedApplication = await applicationService.updateApplicationStatus(applicationId, status, userId);
-        res.status(200).json({ message: 'Statut de la candidature mis à jour avec succès', application: updatedApplication });
-        console.log('Candidature mise à jour:', updatedApplication);
+        console.log('Controller updateApplication appelé');
+
+        const userId = req.user.userId;
+        console.log('User ID récupéré depuis req.user:', userId);
+
+        const applicationId = parseInt(req.params.id, 10);
+        const { status } = req.body;
+
+        console.log(`User ID: ${userId}, Application ID: ${applicationId}`);
+        console.log('Données reçues:', { status });
+
+        if (!applicationId || !status) {
+            console.log('applicationId ou status manquant');
+            return res.status(400).json({ error: 'applicationId et status sont requis' });
+        }
+
+        const updatedApplication = await applicationService.updateApplicationStatus(userId, applicationId, { status });
+        console.log('Application mise à jour:', updatedApplication);
+
+        if (!updatedApplication) {
+            return res.status(404).json({ error: 'Application non trouvée ou accès refusé' });
+        }
+
+        return res.status(200).json(updatedApplication);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Erreur dans updateApplication:', error);
+        return res.status(500).json({ error: 'Could not update application' });
     }
 }
 
 
 async function deleteAppli(req, res) {
-    const userId = req.user.id;
-    const applicationId = parseInt(req.params.id);
-
-    console.log(`User ${userId} is deleting application ${applicationId}.`);
-
     try {
-        const deletedApplication = await applicationService.deleteApplication(applicationId, userId);
-        res.status(200).json({ message: 'Candidature supprimée avec succès', application: deletedApplication });
-        console.log('Candidature supprimée:', deletedApplication);
+        const userId = req.user.userId;
+        const applicationId = parseInt(req.params.id, 10);
+
+        console.log(`User ${userId} is deleting application ${applicationId}.`);
+
+        const deletedApplication = await applicationService.deleteApplication(userId, applicationId);
+
+        if (!deletedApplication) {
+            return res.status(404).json({ error: 'Application non trouvée ou accès refusé' });
+        }
+
+        res.status(200).json({ message: 'Candidature supprimée avec succès' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Erreur dans deleteAppli:', error.message);
+        res.status(500).json({ error: error.message });
     }
 }
 
