@@ -40,18 +40,38 @@ async function getUserAppli(req, res) {
 
 
 async function updateApplication(req, res) {
-    const userId = req.user.id;
-    const applicationId = parseInt(req.params.id);
-    const { status } = req.body;
-
-    console.log(`User ${userId} is updating status of application ${applicationId} to ${status}.`);
-
     try {
-        const updatedApplication = await applicationService.updateApplicationStatus(applicationId, status, userId);
-        res.status(200).json({ message: 'Statut de la candidature mis à jour avec succès', application: updatedApplication });
-        console.log('Candidature mise à jour:', updatedApplication);
+        console.log('Controller updateApplication appelé');
+
+        // Extraction correcte de userId
+        const userId = req.user.userId;
+        console.log('User ID récupéré depuis req.user:', userId);
+
+        // Extraction de l'ID de l'application depuis les paramètres de la route
+        const applicationId = parseInt(req.params.id, 10);
+        const { status } = req.body;
+
+        console.log(`User ID: ${userId}, Application ID: ${applicationId}`);
+        console.log('Données reçues:', { status });
+
+        // Validation des données
+        if (!applicationId || !status) {
+            console.log('applicationId ou status manquant');
+            return res.status(400).json({ error: 'applicationId et status sont requis' });
+        }
+
+        // Appel au service pour mettre à jour l'application
+        const updatedApplication = await applicationService.updateApplication(userId, applicationId, { status });
+        console.log('Application mise à jour:', updatedApplication);
+
+        if (!updatedApplication) {
+            return res.status(404).json({ error: 'Application non trouvée ou accès refusé' });
+        }
+
+        return res.status(200).json(updatedApplication);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Erreur dans updateApplication:', error);
+        return res.status(500).json({ error: 'Could not update application' });
     }
 }
 
