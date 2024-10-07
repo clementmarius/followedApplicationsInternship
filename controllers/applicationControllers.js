@@ -43,25 +43,21 @@ async function updateApplication(req, res) {
     try {
         console.log('Controller updateApplication appelé');
 
-        // Extraction correcte de userId
         const userId = req.user.userId;
         console.log('User ID récupéré depuis req.user:', userId);
 
-        // Extraction de l'ID de l'application depuis les paramètres de la route
         const applicationId = parseInt(req.params.id, 10);
         const { status } = req.body;
 
         console.log(`User ID: ${userId}, Application ID: ${applicationId}`);
         console.log('Données reçues:', { status });
 
-        // Validation des données
         if (!applicationId || !status) {
             console.log('applicationId ou status manquant');
             return res.status(400).json({ error: 'applicationId et status sont requis' });
         }
 
-        // Appel au service pour mettre à jour l'application
-        const updatedApplication = await applicationService.updateApplication(userId, applicationId, { status });
+        const updatedApplication = await applicationService.updateApplicationStatus(userId, applicationId, { status });
         console.log('Application mise à jour:', updatedApplication);
 
         if (!updatedApplication) {

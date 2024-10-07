@@ -66,31 +66,36 @@ async function getUserApplications(userId) {
 }
 
 
-async function updateApplicationStatus(applicationId, newStatus, userId) {
-    try {
-        const application = await prisma.application.findUnique({
-            where: { id: applicationId },
-        });
-
-        if (!application) {
-            throw new Error('Candidature non trouvée');
+    async function updateApplicationStatus(userId, applicationId, updateData) {
+        try {
+            console.log('Service updateApplication appelé avec userId:', userId, ', applicationId:', applicationId, ', updateData:', updateData);
+    
+            const existingApplication = await prisma.application.findUnique({
+                where: { id: applicationId },
+            });
+    
+            console.log('Application trouvée:', existingApplication);
+    
+            if (!existingApplication) {
+                throw new Error('Application non trouvée');
+            }
+    
+            if (existingApplication.userId !== userId) {
+                throw new Error('Non autorisé à modifier cette candidature');
+            }
+    
+            const updatedApplication = await prisma.application.update({
+                where: { id: applicationId },
+                data: updateData,
+            });
+    
+            console.log('Application mise à jour:', updatedApplication);
+            return updatedApplication;
+        } catch (error) {
+            console.error('Erreur dans updateApplication service:', error);
+            throw error;
         }
-
-        if (application.userId !== userId) {
-            throw new Error('Non autorisé à modifier cette candidature');
-        }
-
-        const updatedApplication = await prisma.application.update({
-            where: { id: applicationId },
-            data: { status: newStatus },
-        });
-
-        return updatedApplication;
-    } catch (error) {
-        console.error('Error updating application status:', error);
-        throw new Error('Could not update application status');
     }
-}
 
 
 async function deleteApplication(applicationId, userId) {
