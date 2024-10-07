@@ -18,6 +18,9 @@ async function createUserProfile(userData, profileData) {
                         lastName: profileData.lastName,
                     },
                 },
+                roles: {
+                    connect: { name: 'USER' },
+                },
             },
             include: {
                 profile: true,
@@ -31,11 +34,39 @@ async function createUserProfile(userData, profileData) {
     }
 }
 
+async function createAdminUser() {
+    const adminEmail = 'admin@example.com';
+    const adminPassword = '1234';
+
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+    const existingAdmin = await prisma.user.findUnique({
+        where: { email: adminEmail },
+    });
+
+    if (!existingAdmin) {
+        await prisma.user.create({
+            data: {
+                email: adminEmail,
+                password: hashedPassword,
+                roles: {
+                    connect: { name: 'ADMIN' }, 
+                },
+            },
+        });
+
+        console.log(`Admin user created: ${adminEmail}`);
+    } else {
+        console.log(`Admin user already exists: ${adminEmail}`);
+    }
+}
+
+
 async function getUserWithId(userId) {
     try {
         const findUser = await prisma.user.findUnique({
             where: {
-                id: userId, 
+                id: userId,
             },
             include: {
                 profile: true,
@@ -82,8 +113,8 @@ async function updateExistingUser(email, newEmail, newPassword) {
         const updatedUser = await prisma.user.update({
             where: { email: email },
             data: {
-                email: newEmail || email, 
-                password: hashedPassword, 
+                email: newEmail || email,
+                password: hashedPassword,
             },
         });
 
