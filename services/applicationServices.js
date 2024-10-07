@@ -100,26 +100,35 @@ async function getUserApplications(userId) {
 
 async function deleteApplication(applicationId, userId) {
     try {
-        const application = await prisma.application.findUnique({
+        console.log('Service deleteApplication appelé avec userId:', userId, ', applicationId:', applicationId);
+
+        // Vérifier que l'application existe
+        const existingApplication = await prisma.application.findUnique({
             where: { id: applicationId },
         });
 
-        if (!application) {
-            throw new Error('Candidature non trouvée');
+        console.log('Application trouvée:', existingApplication);
+
+        if (!existingApplication) {
+            throw new Error('Application non trouvée');
         }
 
-        if (application.userId !== userId) {
+        // Vérifier que l'application appartient à l'utilisateur
+        if (existingApplication.userId !== userId) {
+            console.log(`Utilisateur ${userId} tente de supprimer une application appartenant à ${existingApplication.userId}`);
             throw new Error('Non autorisé à supprimer cette candidature');
         }
 
-        const deletedApplication = await prisma.application.delete({
+        // Supprimer l'application
+        await prisma.application.delete({
             where: { id: applicationId },
         });
 
-        return deletedApplication;
+        console.log('Application supprimée avec succès');
+        return true;
     } catch (error) {
-        console.error('Error deleting application:', error);
-        throw new Error('Could not delete application');
+        console.error('Erreur dans deleteApplication service:', error.message);
+        throw error;
     }
 }
 

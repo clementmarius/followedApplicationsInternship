@@ -73,17 +73,34 @@ async function updateApplication(req, res) {
 
 
 async function deleteAppli(req, res) {
-    const userId = req.user.id;
-    const applicationId = parseInt(req.params.id);
-
-    console.log(`User ${userId} is deleting application ${applicationId}.`);
-
     try {
-        const deletedApplication = await applicationService.deleteApplication(applicationId, userId);
-        res.status(200).json({ message: 'Candidature supprimée avec succès', application: deletedApplication });
-        console.log('Candidature supprimée:', deletedApplication);
+        console.log('Controller deleteAppli appelé');
+
+        // Extraction correcte de userId
+        const userId = req.user.userId;
+        console.log('User ID récupéré depuis req.user:', userId);
+
+        // Extraction de l'ID de l'application depuis les paramètres de la route
+        const applicationId = parseInt(req.params.id, 10);
+        console.log('Application ID à supprimer:', applicationId);
+
+        if (!applicationId) {
+            console.log('applicationId manquant');
+            return res.status(400).json({ error: 'applicationId est requis' });
+        }
+
+        // Appel au service pour supprimer l'application
+        const deletedApplication = await applicationService.deleteApplication(userId, applicationId);
+        console.log('Application supprimée:', deletedApplication);
+
+        if (!deletedApplication) {
+            return res.status(404).json({ error: 'Application non trouvée ou accès refusé' });
+        }
+
+        return res.status(200).json({ message: 'Application supprimée avec succès' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Erreur dans deleteAppli:', error.message);
+        return res.status(500).json({ error: 'Could not delete application' });
     }
 }
 
