@@ -22,4 +22,32 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { loginUser };
+const logOutUser = async (req, res) => {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(400).json({ message: 'Token manquant ou mal formé' });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        await prisma.blacklistedToken.create({
+            data: {
+                token,
+                expiresAt: new Date(decoded.exp * 1000)
+            }
+        });
+
+        res.status(200).json({ message: 'Déconnexion réussie' });
+    } catch (error) {
+        res.status(400).json({ message: 'Token invalide' });
+    }
+};
+
+module.exports = {
+    loginUser,
+    logOutUser
+};
