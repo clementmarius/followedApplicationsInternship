@@ -2,7 +2,7 @@ const prisma = require('../libs/prisma');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const loginUser = async (email, password) => {
+const loginUserService = async (email, password) => {
 
     const user = await prisma.user.findUnique({
         where: { email }
@@ -24,4 +24,24 @@ const loginUser = async (email, password) => {
     return { token, user };
 };
 
-module.exports = { loginUser };
+const logOutUserService = async (token) => {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        await prisma.blacklistedToken.create({
+            data: {
+                token,
+                expiresAt: new Date(decoded.exp * 1000)
+            }
+        });
+
+        return { message: 'Logout successful' };
+    } catch (error) {
+        throw new Error('Invalid token');
+    }
+};
+
+module.exports = {
+    loginUserService,
+    logOutUserService
+};
