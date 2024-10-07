@@ -19,6 +19,13 @@ model User {
   password     String
   profile      Profile?    @relation("UserProfile")
   applications Application[]
+  roles        Role[]      @relation("UserRoles")
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  users       User[]       @relation("UserRoles")
 }
 
 model Profile {

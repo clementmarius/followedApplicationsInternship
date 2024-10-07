@@ -1,12 +1,21 @@
 const prisma = require('../libs/prisma');
 const bcrypt = require('bcrypt');
 const { sendEmail: brevoSendEmail } = require('../brevo');
-/* const { email } = require('../config');
- */
 
 async function createUserProfile(userData, profileData) {
     try {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+        const existingRole = await prisma.role.findUnique({
+            where: { name: 'USER' },
+        });
+    
+        if (!existingRole) {
+            await prisma.role.create({
+                data: { name: 'USER' },
+            });
+            console.log(`Role created: USER`);
+        }
 
         const newUser = await prisma.user.create({
             data: {
@@ -17,6 +26,9 @@ async function createUserProfile(userData, profileData) {
                         firstName: profileData.firstName,
                         lastName: profileData.lastName,
                     },
+                },
+                roles: {
+                    connect: { name: 'USER' },
                 },
             },
             include: {
@@ -31,11 +43,50 @@ async function createUserProfile(userData, profileData) {
     }
 }
 
+async function createAdminUser() {
+    const adminEmail = 'admin@example.com';
+    const adminPassword = '1234';
+
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+    const existingRole = await prisma.role.findUnique({
+        where: { name: 'ADMIN' },
+    });
+
+    if (!existingRole) {
+        await prisma.role.create({
+            data: { name: 'ADMIN' },
+        });
+        console.log(`Role created: ADMIN`);
+    }
+
+    const existingAdmin = await prisma.user.findUnique({
+        where: { email: adminEmail },
+    });
+
+    if (!existingAdmin) {
+        await prisma.user.create({
+            data: {
+                email: adminEmail,
+                password: hashedPassword,
+                roles: {
+                    connect: { name: 'ADMIN' },
+                },
+            },
+        });
+
+        console.log(`Admin user created: ${adminEmail}`);
+    } else {
+        console.log(`Admin user already exists: ${adminEmail}`);
+    }
+}
+
+
 async function getUserWithId(userId) {
     try {
         const findUser = await prisma.user.findUnique({
             where: {
-                id: userId, 
+                id: userId,
             },
             include: {
                 profile: true,
@@ -82,8 +133,8 @@ async function updateExistingUser(email, newEmail, newPassword) {
         const updatedUser = await prisma.user.update({
             where: { email: email },
             data: {
-                email: newEmail || email, 
-                password: hashedPassword, 
+                email: newEmail || email,
+                password: hashedPassword,
             },
         });
 
@@ -96,26 +147,24 @@ async function updateExistingUser(email, newEmail, newPassword) {
 
 async function deleteUserById(userId) {
     try {
-        // Suppression des applications liées à l'utilisateur
         await prisma.application.deleteMany({
             where: {
-                userId: userId, // Suppression des applications de cet utilisateur
+                userId: userId,
             },
         });
 
         await prisma.profile.deleteMany({
             where: {
-                userId: userId, // Suppression du profil de cet utilisateur
+                userId: userId,
             },
         });
 
-        // Suppression de l'utilisateur avec toutes ses relations
         const deletedUser = await prisma.user.delete({
             where: {
                 id: userId,
             },
             include: {
-                profile: true, // Inclure le profil pour le supprimer aussi
+                profile: true,
             },
         });
 
@@ -133,4 +182,5 @@ module.exports = {
     getAllUserId,
     updateExistingUser,
     deleteUserById,
+    createAdminUser,
 }
