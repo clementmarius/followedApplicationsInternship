@@ -74,33 +74,21 @@ async function updateApplication(req, res) {
 
 async function deleteAppli(req, res) {
     try {
-        console.log('Controller deleteAppli appelé');
-
-        // Extraction correcte de userId
         const userId = req.user.userId;
-        console.log('User ID récupéré depuis req.user:', userId);
-
-        // Extraction de l'ID de l'application depuis les paramètres de la route
         const applicationId = parseInt(req.params.id, 10);
-        console.log('Application ID à supprimer:', applicationId);
 
-        if (!applicationId) {
-            console.log('applicationId manquant');
-            return res.status(400).json({ error: 'applicationId est requis' });
-        }
+        console.log(`User ${userId} is deleting application ${applicationId}.`);
 
-        // Appel au service pour supprimer l'application
         const deletedApplication = await applicationService.deleteApplication(userId, applicationId);
-        console.log('Application supprimée:', deletedApplication);
 
         if (!deletedApplication) {
             return res.status(404).json({ error: 'Application non trouvée ou accès refusé' });
         }
 
-        return res.status(200).json({ message: 'Application supprimée avec succès' });
+        res.status(200).json({ message: 'Candidature supprimée avec succès' });
     } catch (error) {
         console.error('Erreur dans deleteAppli:', error.message);
-        return res.status(500).json({ error: 'Could not delete application' });
+        res.status(500).json({ error: error.message });
     }
 }
 
