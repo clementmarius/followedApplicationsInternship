@@ -78,6 +78,16 @@ async function removeUser(req, res) {
     }
 }
 
+const initializeAdminUser = async (req, res) => {
+    try {
+        await userService.createAdminUser();
+        res.status(200).json({ message: 'Admin user initialized successfully.' });
+    } catch (error) {
+        console.error('Error initializing admin user:', error);
+        res.status(500).json({ message: 'Could not initialize admin user.' });
+    }
+};
+
 
 module.exports = {
     createUser,
@@ -85,4 +95,5 @@ module.exports = {
     findAllUserById,
     updateUser,
     removeUser,
+    initializeAdminUser
 };

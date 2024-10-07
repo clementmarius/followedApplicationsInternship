@@ -1,12 +1,21 @@
 const prisma = require('../libs/prisma');
 const bcrypt = require('bcrypt');
 const { sendEmail: brevoSendEmail } = require('../brevo');
-/* const { email } = require('../config');
- */
 
 async function createUserProfile(userData, profileData) {
     try {
         const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+        const existingRole = await prisma.role.findUnique({
+            where: { name: 'USER' },
+        });
+    
+        if (!existingRole) {
+            await prisma.role.create({
+                data: { name: 'USER' },
+            });
+            console.log(`Role created: USER`);
+        }
 
         const newUser = await prisma.user.create({
             data: {
@@ -40,6 +49,17 @@ async function createAdminUser() {
 
     const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
+    const existingRole = await prisma.role.findUnique({
+        where: { name: 'ADMIN' },
+    });
+
+    if (!existingRole) {
+        await prisma.role.create({
+            data: { name: 'ADMIN' },
+        });
+        console.log(`Role created: ADMIN`);
+    }
+
     const existingAdmin = await prisma.user.findUnique({
         where: { email: adminEmail },
     });
@@ -50,7 +70,7 @@ async function createAdminUser() {
                 email: adminEmail,
                 password: hashedPassword,
                 roles: {
-                    connect: { name: 'ADMIN' }, 
+                    connect: { name: 'ADMIN' },
                 },
             },
         });
@@ -127,26 +147,24 @@ async function updateExistingUser(email, newEmail, newPassword) {
 
 async function deleteUserById(userId) {
     try {
-        // Suppression des applications liées à l'utilisateur
         await prisma.application.deleteMany({
             where: {
-                userId: userId, // Suppression des applications de cet utilisateur
+                userId: userId,
             },
         });
 
         await prisma.profile.deleteMany({
             where: {
-                userId: userId, // Suppression du profil de cet utilisateur
+                userId: userId,
             },
         });
 
-        // Suppression de l'utilisateur avec toutes ses relations
         const deletedUser = await prisma.user.delete({
             where: {
                 id: userId,
             },
             include: {
-                profile: true, // Inclure le profil pour le supprimer aussi
+                profile: true,
             },
         });
 
@@ -164,4 +182,5 @@ module.exports = {
     getAllUserId,
     updateExistingUser,
     deleteUserById,
+    createAdminUser,
 }
