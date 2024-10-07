@@ -15,7 +15,15 @@ router.get('/myApplications', authenticateToken, (req, res, next) => {
 }, applicationController.getUserAppli);
 
 
-router.put('/updateApplication/:id', authenticateToken, applicationController.updateApplication);
+/* router.put('/updateApplication/:id', authenticateToken, applicationController.updateApplication);
+ */
+
+router.put('/updateApplication/:id', authenticateToken, (req, res, next) => {
+    console.log(`PUT /application/updateApplication/${req.params.id} route hit`);
+    console.log('Request body:', req.body);
+    next();
+}, applicationController.updateApplication);
+
 router.delete('/deleteApplication/:id', authenticateToken, applicationController.deleteAppli);
 
 module.exports = router;
