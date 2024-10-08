@@ -1,4 +1,4 @@
-const prisma = require('../../libs/prisma');
+const prisma = require('../libs/prisma');
 
 async function createApplication(userId, applicationData) {
 
