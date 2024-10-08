@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 
 const timeout = require('connect-timeout'); 
-const haltOnTimedout = require('./middlewares/haltOnTimedout'); 
+const haltOnTimedout = require('../followedApplicationsInternship/src/middlewares/haltOnTimedout'); 
 
 app.use(timeout('30s')); 
 app.use(haltOnTimedout);
@@ -24,11 +24,11 @@ app.post('/submit-form', (req, res) => {
     res.send('Form submitted');
 });
 
-app.use('/profile', require('./routes/userRoutes'));
-app.use('/job', require('./routes/jobRoutes'));
-app.use('/application', require('./routes/applicationRoutes'));
-app.use('/user', require('./routes/authRoutes'));
-app.use('/test', require('./routes/testRoutes')); 
+app.use('/profile', require('../followedApplicationsInternship/src/routes/userRoutes'));
+app.use('/job', require('../followedApplicationsInternship/src/routes/jobRoutes'));
+app.use('/application', require('../followedApplicationsInternship/src/routes/applicationRoutes'));
+app.use('/user', require('../followedApplicationsInternship/src/routes/authRoutes'));
+app.use('/test', require('../followedApplicationsInternship/src/routes/testRoutes')); 
 
 const port = 3000;
 

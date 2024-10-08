@@ -1,7 +1,7 @@
 const express = require('express');
 
-const jobController = require('../controllers/jobControllers');
-const mapsController = require('../controllers/mapsController');
+const jobController = require('../../controllers/jobControllers');
+const mapsController = require('../../controllers/mapsController');
 
 const router = express.Router();
 
