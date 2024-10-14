@@ -1,23 +1,26 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-
 const timeout = require('connect-timeout'); 
 const haltOnTimedout = require('../back/src/middlewares/haltOnTimedout'); 
+const cors = require("cors");
+const corsOption = {
+    origin: ["http://localhost:5173"]
+}
 
 app.use(timeout('30s')); 
 app.use(haltOnTimedout);
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors(corsOption));
 
 app.use((req, res, next) => {
     console.log(`${req.method} request for ${req.url}`);
     next();
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello World');  
+app.get('/api', (req, res) => {
+    res.json({fruits : ["apple", "Orange", "Kiwi"]});  
 });
 
 app.post('/submit-form', (req, res) => {
