@@ -10,7 +10,7 @@ function App() {
   const fetchApi = async () => {
     try {
       const token = localStorage.getItem('token');  // Obtenir le token stocké après connexion
-      const response = await axios.get("http://localhost:3000/user/me", {
+      const response = await axios.get("http://localhost:3000/profile/me", {
         headers: {
           Authorization: `Bearer ${token}`,  // Ajouter le token dans le header Authorization
         },

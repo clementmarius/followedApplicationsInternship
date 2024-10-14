@@ -27,6 +27,12 @@ async function createUser(req, res) {
 
 async function getCurrentUser(req, res) {
     const userId = req.user.userId;  
+    const roles = req.user.roles; 
+
+    // Vérifier si l'utilisateur a le rôle 'ADMIN'
+    if (!roles.includes('ADMIN')) {
+        return res.status(403).json({ message: 'Accès interdit' });
+    }
 
     try {
         const currentUser = await userService.getCurrentUser(userId);
@@ -36,6 +42,7 @@ async function getCurrentUser(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+
 
 
 async function findUserById(req, res) {

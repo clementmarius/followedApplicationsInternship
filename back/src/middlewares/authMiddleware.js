@@ -19,7 +19,11 @@ function authenticateToken(req, res, next) {
             return res.status(403).json({ message: 'Token invalide' });
         }
         console.log('Token valide, utilisateur:', user);
-        req.user = user; 
+        req.user = {
+            userId: user.userId, // Assurez-vous que l'ID de l'utilisateur est bien récupéré
+            roles: user.roles || [] // Définit un tableau vide si roles est undefined
+        };
+ 
         next(); 
     });
 }
