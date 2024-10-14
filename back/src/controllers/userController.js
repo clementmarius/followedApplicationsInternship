@@ -26,7 +26,7 @@ async function createUser(req, res) {
 }
 
 async function getCurrentUser(req, res) {
-    const userId = req.user.id;  
+    const userId = req.user.userId;  
 
     try {
         const currentUser = await userService.getCurrentUser(userId);
