@@ -19,16 +19,6 @@ app.use((req, res, next) => {
     next();
 });
 
-/* app.get('/api', (req, res) => {
-    res.json({fruits : ["apple", "Orange", "Kiwi"]});  
-}); */
-
-
-/* app.get('/getUser', (req, res) => {
-    const users = ["John Doe", "Jane Doe", "Alice", "Bob"];
-    res.json({ users });  // Renvoie un tableau de noms d'utilisateurs
-});
- */
 
 app.post('/submit-form', (req, res) => {
     res.send('Form submitted');

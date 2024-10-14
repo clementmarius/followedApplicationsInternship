@@ -81,6 +81,29 @@ async function createAdminUser() {
     }
 }
 
+async function getCurrentUser(userId) {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            include: {
+                profile: true,
+                roles: true, 
+            },
+        });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        return user;
+    } catch (error) {
+        console.error('Error retrieving current user:', error);
+        throw new Error('Could not get current user');
+    }
+}
+
 
 async function getUserWithId(userId) {
     try {
@@ -183,4 +206,5 @@ module.exports = {
     updateExistingUser,
     deleteUserById,
     createAdminUser,
+    getCurrentUser
 }
