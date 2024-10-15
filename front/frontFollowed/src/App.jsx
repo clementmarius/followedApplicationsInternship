@@ -9,16 +9,15 @@ function App() {
 
   const fetchApi = async () => {
     try {
-      const token = localStorage.getItem('token');  // Obtenir le token stocké après connexion
+      const token = localStorage.getItem('token');  
       const response = await axios.get("http://localhost:3000/profile/me", {
         headers: {
-          Authorization: `Bearer ${token}`,  // Ajouter le token dans le header Authorization
+          Authorization: `Bearer ${token}`,  
         },
       });
       setUser(response.data);  
     } catch (error) {
       console.error("Erreur lors de la récupération de l'utilisateur connecté : ", error);
-      // Vous pouvez gérer les erreurs spécifiques ici
       if (error.response && error.response.status === 401) {
         setError("Session expirée. Veuillez vous reconnecter.");
       } else {

@@ -20,8 +20,8 @@ function authenticateToken(req, res, next) {
         }
         console.log('Token valide, utilisateur:', user);
         req.user = {
-            userId: user.userId, // Assurez-vous que l'ID de l'utilisateur est bien récupéré
-            roles: user.roles || [] // Définit un tableau vide si roles est undefined
+            userId: user.userId,
+            roles: user.roles || [] 
         };
  
         next(); 
