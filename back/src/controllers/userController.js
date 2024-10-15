@@ -27,11 +27,12 @@ async function createUser(req, res) {
 
 async function getCurrentUser(req, res) {
     const userId = req.user.userId;  
-    /* const roles = req.user.roles;  */
-
     try {
         const currentUser = await userService.getCurrentUser(userId);
-        res.status(200).json(currentUser);
+
+        const { password, ...userWithoutPassword } = currentUser;
+
+        res.status(200).json(userWithoutPassword);
         console.log('Current user retrieved:', currentUser);
     } catch (error) {
         res.status(500).json({ message: error.message });

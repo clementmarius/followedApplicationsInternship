@@ -1,21 +1,31 @@
 import './index.css';
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './components/login';
+import Profile from './components/profile';
 import axios from 'axios';
 
 function App() {
-  const [user, setUser] = useState(null);  
-  const [loading, setLoading] = useState(true);  
-  const [error, setError] = useState(null);  
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchApi = async () => {
     try {
-      const token = localStorage.getItem('token');  
+      const token = localStorage.getItem('token');
+
+      console.log("Token récupéré depuis localStorage:", token);
+
+      if (!token) {
+        throw new Error("Token manquant");
+      }
+
       const response = await axios.get("http://localhost:3000/profile/me", {
         headers: {
-          Authorization: `Bearer ${token}`,  
+          Authorization: `Bearer ${token}`,
         },
       });
-      setUser(response.data);  
+      setUser(response.data);
     } catch (error) {
       console.error("Erreur lors de la récupération de l'utilisateur connecté : ", error);
       if (error.response && error.response.status === 401) {
@@ -24,28 +34,24 @@ function App() {
         setError("Erreur lors de la récupération de l'utilisateur connecté.");
       }
     } finally {
-      setLoading(false);  
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchApi();  
+    fetchApi();
   }, []);
 
-  if (loading) return <p>Chargement...</p>;  
-  if (error) return <p>{error}</p>; 
+  if (loading) return <p>Chargement...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      {user ? (
-        <div>
-          <h1>Bienvenue, {`${user.profile.firstName} ${user.profile.lastName}`}</h1>
-          <p>Email : {user.email}</p>
-        </div>
-      ) : (
-        <p>Aucun utilisateur connecté.</p>  
-      )}
-    </div>
+    <Router>
+    <Routes>
+      <Route path="/" element={user ? <Profile user={user} /> : <Login />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
+  </Router>
   );
 }
 

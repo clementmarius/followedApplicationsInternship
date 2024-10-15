@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const loginUserService = async (email, password) => {
 
     const user = await prisma.user.findUnique({
-        where: { email }
+        where: { email },
+        include: { profile: true }
     });
 
     if (!user) {
