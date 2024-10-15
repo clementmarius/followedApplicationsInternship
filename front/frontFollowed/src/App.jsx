@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/login';
 import Profile from './components/profile';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -12,9 +14,12 @@ function App() {
 
   const fetchApi = async () => {
     try {
+      const userCookie = Cookies.get('user');
       const token = localStorage.getItem('token');
 
       console.log("Token récupéré depuis localStorage:", token);
+      console.log("Utilisateur récupéré depuis le cookie:", userCookie);
+
 
       if (!token) {
         throw new Error("Token manquant");

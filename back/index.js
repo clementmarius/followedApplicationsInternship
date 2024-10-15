@@ -20,9 +20,10 @@ app.use((req, res, next) => {
 });
 
 
-app.post('/submit-form', (req, res) => {
+/* app.post('/submit-form', (req, res) => {
     res.send('Form submitted');
-});
+}); */
+
 
 app.use('/profile', require('../back/src/routes/userRoutes'));
 app.use('/job', require('../back/src/routes/jobRoutes'));
