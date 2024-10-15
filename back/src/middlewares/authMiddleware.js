@@ -2,11 +2,11 @@ const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
     console.log('Middleware authenticateToken appelé');
-    
+
     const authHeader = req.headers['authorization'];
     console.log('Authorization Header:', authHeader);
 
-    const token = authHeader && authHeader.split(' ')[1]; 
+    const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
         console.log('Token manquant');
@@ -21,10 +21,10 @@ function authenticateToken(req, res, next) {
         console.log('Token valide, utilisateur:', user);
         req.user = {
             userId: user.userId,
-            roles: user.roles || [] 
+            roles: user.roles || []
         };
- 
-        next(); 
+
+        next();
     });
 }
 

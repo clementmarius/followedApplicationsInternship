@@ -27,12 +27,7 @@ async function createUser(req, res) {
 
 async function getCurrentUser(req, res) {
     const userId = req.user.userId;  
-    const roles = req.user.roles; 
-
-    // Vérifier si l'utilisateur a le rôle 'ADMIN'
-    if (!roles.includes('ADMIN')) {
-        return res.status(403).json({ message: 'Accès interdit' });
-    }
+    /* const roles = req.user.roles;  */
 
     try {
         const currentUser = await userService.getCurrentUser(userId);
