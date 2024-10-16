@@ -28,12 +28,10 @@ function Login() {
         Cookies.set('token', token, { expires: 1 });
         console.log("Token stocké dans les cookies:", token);
         
-        // Optionnel : Si vous stockez l'utilisateur dans un cookie
         const userCookie = Cookies.get('user');
         if (userCookie) {
           setUser(JSON.parse(userCookie));
         } else {
-          // Sinon, récupérer le profil utilisateur après connexion
           const userResponse = await axios.get("http://localhost:3000/profile/me", {
             withCredentials: true,
           });
