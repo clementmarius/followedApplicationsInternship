@@ -9,7 +9,7 @@ jest.mock('js-cookie');
 
 const MockComponent = () => {
   const { user, loading, error } = React.useContext(AuthContext);
-  
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   return <div>{user ? user.email : 'No user'}</div>;
