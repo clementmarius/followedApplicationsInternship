@@ -14,8 +14,8 @@ function App() {
 
   const fetchApi = async () => {
     try {
+      const token = Cookies.get('token');
       const userCookie = Cookies.get('user');
-      const token = localStorage.getItem('token');
 
       console.log("Token récupéré depuis localStorage:", token);
       console.log("Utilisateur récupéré depuis le cookie:", userCookie);
@@ -26,10 +26,9 @@ function App() {
       }
 
       const response = await axios.get("http://localhost:3000/profile/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
+      console.log("Réponse reçue:", response.data);
       setUser(response.data);
     } catch (error) {
       console.error("Erreur lors de la récupération de l'utilisateur connecté : ", error);

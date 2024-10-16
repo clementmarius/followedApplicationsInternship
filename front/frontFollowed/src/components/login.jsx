@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; 
+import Cookies from 'js-cookie'; 
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -10,20 +11,26 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Formulaire soumis avec :', { email, password });
     try {
       const response = await axios.post('http://localhost:3000/user/login/auth', {
         email,
         password,
-      });
+      }, { withCredentials: true }); 
+
+      console.log('Réponse du serveur :', response.data);
+
       const token = response.data.token; 
+      console.log("Token into the cookies:", token); 
+
       if (token) {
-        localStorage.setItem('token', token); 
-        console.log("Token stocké dans localStorage:", token); 
-        navigate('/'); 
+        Cookies.set('token', token, { expires: 1 }); 
+        console.log("Token into the cookies:", token); 
+        navigate('/profile/me'); 
       }
     } catch (error) {
-      console.error('Erreur lors de la connexion :', error);
-      setError('Email ou mot de passe incorrect.'); 
+      console.error('Connection error :', error);
+      setError('Mail or password wrong'); 
     }
   };
 

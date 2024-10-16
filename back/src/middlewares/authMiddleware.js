@@ -3,10 +3,17 @@ const jwt = require('jsonwebtoken');
 function authenticateToken(req, res, next) {
     console.log('Middleware authenticateToken appelé');
 
-    const authHeader = req.headers['authorization'];
-    console.log('Authorization Header:', authHeader);
+     const authHeader = req.headers['authorization'];
+    console.log('Authorization Header:', authHeader); 
 
-    const token = authHeader && authHeader.split(' ')[1];
+    let token = authHeader && authHeader.split(' ')[1];
+    console.log('Token extrait:', token); 
+
+
+    if (!token) {
+        token = req.cookies['token'];
+        console.log('Token extrait des cookies:', token);
+    } 
 
     if (!token) {
         console.log('Token manquant');
