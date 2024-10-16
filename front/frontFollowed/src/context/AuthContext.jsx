@@ -12,29 +12,35 @@ export const AuthProvider = ({ children }) => {
   const fetchApi = async () => {
     try {
       const token = Cookies.get('token');
+      console.log('Token récupéré:', token); // Vérification du token
       if (!token) {
         throw new Error("Token manquant");
       }
 
+      // Envoi de la requête avec le token dans l'en-tête Authorization
       const response = await axios.get("http://localhost:3000/profile/me", {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`, // Ajout de l'en-tête Authorization
+        },
+        withCredentials: true, // Assurez-vous que les cookies sont envoyés avec la requête
       });
-      setUser(response.data);
+
+      setUser(response.data); // Stocker les informations de l'utilisateur
     } catch (error) {
       console.error("Erreur lors de la récupération de l'utilisateur connecté : ", error);
-      setUser(null);
+      setUser(null); // Réinitialiser l'utilisateur en cas d'erreur
       if (error.response && error.response.status === 401) {
         setError("Session expirée. Veuillez vous reconnecter.");
       } else {
         setError("Erreur lors de la récupération de l'utilisateur connecté.");
       }
     } finally {
-      setLoading(false);
+      setLoading(false); // Mettre à jour l'état de chargement
     }
   };
 
   useEffect(() => {
-    fetchApi();
+    fetchApi(); // Appeler la fonction pour récupérer l'utilisateur
   }, []);
 
   return (
