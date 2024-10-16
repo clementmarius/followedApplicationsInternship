@@ -1,36 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Formulaire soumis avec :', { email, password });
+
     try {
       const response = await axios.post('http://localhost:3000/user/login/auth', {
         email,
         password,
-      }, { withCredentials: true }); 
+      }, { withCredentials: true });
 
       console.log('Réponse du serveur :', response.data);
 
-      const token = response.data.token; 
-      console.log("Token into the cookies:", token); 
-
+      const token = response.data.token;
       if (token) {
-        Cookies.set('token', token, { expires: 1 }); 
-        console.log("Token into the cookies:", token); 
-        navigate('/profile/me'); 
+        Cookies.set('token', token, { expires: 1 });
+        console.log("Token stocké dans les cookies:", token);
+        
+        // Optionnel : Si vous stockez l'utilisateur dans un cookie
+        const userCookie = Cookies.get('user');
+        if (userCookie) {
+          setUser(JSON.parse(userCookie));
+        } else {
+          // Sinon, récupérer le profil utilisateur après connexion
+          const userResponse = await axios.get("http://localhost:3000/profile/me", {
+            withCredentials: true,
+          });
+          setUser(userResponse.data);
+        }
+        navigate('/');
       }
     } catch (error) {
-      console.error('Connection error :', error);
-      setError('Mail or password wrong'); 
+      console.error('Erreur lors de la connexion :', error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Email ou mot de passe incorrect.');
+      }
     }
   };
 
