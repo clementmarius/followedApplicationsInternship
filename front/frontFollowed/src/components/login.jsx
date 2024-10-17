@@ -1,81 +1,81 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { useContext, useState } from 'react';
+import { StoreContext } from '../store';
 
-function Login() {
-  const [email, setEmail] = useState('');
+const LoginForm = () => {
+  const { dispatch } = useContext(StoreContext);
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const { setUser } = useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log('Formulaire soumis avec :', { email, password });
-
-    try {
-      const response = await axios.post('http://localhost:3000/user/login/auth', {
-        email,
-        password,
-      }, { withCredentials: true });
-
-      console.log('Réponse du serveur :', response.data);
-
-      const token = response.data.token;
-      if (token) {
-        Cookies.set('token', token, { expires: 1 });
-        console.log("Token stocké dans les cookies:", token);
-        
-        const userCookie = Cookies.get('user');
-        if (userCookie) {
-          setUser(JSON.parse(userCookie));
-        } else {
-          const userResponse = await axios.get("http://localhost:3000/profile/me", {
-            withCredentials: true,
-          });
-          setUser(userResponse.data);
-        }
-        navigate('/');
-      }
-    } catch (error) {
-      console.error('Erreur lors de la connexion :', error);
-      if (error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
-      } else {
-        setError('Email ou mot de passe incorrect.');
-      }
-    }
+  const tryLogin = () => {
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        username,
+        password
+      },
+    });
   };
 
   return (
-    <div>
-      <h2>Connexion</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    <>
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Login</h5>
+          <div className="input-group mb-3">
+            <span
+              className="input-group-text justify-content-center"
+              id="username-prefix"
+              style={{
+                width: '2.5rem',
+              }}
+            >
+              @
+            </span>
+            <input
+              type="text"
+              name="username"
+              className="form-control"
+              placeholder="Username"
+              aria-label="Username"
+              aria-describedby="username-prefix"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+          </div>
+          <div className="input-group mb-3">
+            <span
+              className="input-group-text justify-content-center"
+              id="password-prefix"
+              style={{
+                width: '2.5rem',
+              }}
+            >
+              *
+            </span>
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              aria-describedby="password-prefix"
+              placeholder="Password..."
+              aria-label="Password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </div>
+          <div className="d-grid gap-2">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={tryLogin}
+            >
+              Login
+            </button>
+          </div>
         </div>
-        <div>
-          <label>Mot de passe:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Se connecter</button>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+      </div>
+    </>
   );
 }
 
-export default Login;
+export default LoginForm;

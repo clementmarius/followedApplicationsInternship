@@ -1,25 +1,24 @@
 const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
-    console.log('Middleware authenticateToken appelé');
+    console.log('Middleware authenticateToken called');
 
-     const authHeader = req.headers['authorization'];
-    console.log('Authorization Header:', authHeader); 
-
+    const authHeader = req.headers['authorization'];
     let token = authHeader && authHeader.split(' ')[1];
-    console.log('Token extrait:', token); 
 
-
+    // Vérifier si le token est présent dans l'en-tête Authorization
     if (!token) {
         token = req.cookies['token'];
-        console.log('Token extrait des cookies:', token);
-    } 
+        console.log('Token trouvé dans les cookies:', token);
+    }
 
+    // Si le token est toujours absent, renvoyer une erreur
     if (!token) {
         console.log('Token manquant');
         return res.status(401).json({ message: 'Token manquant' });
     }
 
+    // Vérifier la validité du token
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
             console.log('Token invalide:', err.message);
@@ -31,7 +30,7 @@ function authenticateToken(req, res, next) {
             roles: user.roles || []
         };
 
-        next();
+        next(); // Appeler la prochaine fonction middleware
     });
 }
 

@@ -1,21 +1,37 @@
-import React, { useContext } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Login from './components/login';
-import Profile from './components/profile';
-import { AuthContext } from './context/AuthContext';
+import { useContext } from 'react';
+import { StoreContext } from './store';
 
-function App() {
-  const { user, loading, error } = useContext(AuthContext);
+import List from './components/List';
+import Form from './components/Form';
+import Header from './components/Header';
+import LoginForm from './components/Login';
 
-  if (loading) return <p>Chargement...</p>;
-  if (error) return <p>{error}</p>;
-
+const App = () => {
+  const { state } = useContext(StoreContext);
   return (
-    <Routes>
-      <Route path="/" element={user ? <Profile user={user} /> : <Login />} />
-      <Route path="/login" element={<Login />} />
-      {/* Ajoutez d'autres routes protégées ici */}
-    </Routes>
+    <>
+      <Header />
+      <div className="container">
+        {state.auth.isLoggedIn ? (
+          <>
+            <div className="card px-3">
+              <div className="card-body">
+                <Form />
+                <List />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p>
+              Example app with login system using cookies. To login, use any
+              username and the password <kbd>abcdef</kbd>
+            </p>
+            <LoginForm />
+          </>
+        )}
+      </div>
+    </>
   );
 }
 

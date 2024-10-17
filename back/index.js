@@ -5,6 +5,7 @@ const timeout = require('connect-timeout');
 const haltOnTimedout = require('../back/src/middlewares/haltOnTimedout'); 
 const cors = require("cors");
 const cookieParser = require('cookie-parser'); 
+const authenticateToken = require('../back/src/middlewares/authMiddleware');
 
 
 const corsOption = {
@@ -24,11 +25,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/profile', require('../back/src/routes/userRoutes'));
-app.use('/job', require('../back/src/routes/jobRoutes'));
-app.use('/application', require('../back/src/routes/applicationRoutes'));
-app.use('/user', require('../back/src/routes/authRoutes'));
-app.use('/test', require('../back/src/routes/testRoutes')); 
+app.use('/user', require('../back/src/routes/authRoutes')); 
+
+// Routes protégées - nécessitent l'authentification
+app.use('/profile', authenticateToken, require('../back/src/routes/userRoutes'));
+app.use('/job', authenticateToken, require('../back/src/routes/jobRoutes'));
+app.use('/application', authenticateToken, require('../back/src/routes/applicationRoutes'));
+app.use('/test', authenticateToken, require('../back/src/routes/testRoutes'));
 
 const port = 3000;
 
