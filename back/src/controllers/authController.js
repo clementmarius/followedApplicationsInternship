@@ -1,4 +1,4 @@
-/* const authService = require('../services/authService');
+const authService = require('../services/authService');
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -54,10 +54,10 @@ const logOutUser = async (req, res) => {
 module.exports = {
     loginUser,
     logOutUser
-}; */
+};
 
 
-const authService = require('../services/authService');
+/* const authService = require('../services/authService');
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -125,3 +125,4 @@ module.exports = {
     loginUser,
     logOutUser
 };
+ */
