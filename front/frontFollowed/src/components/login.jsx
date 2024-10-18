@@ -1,19 +1,40 @@
-import { useContext, useState } from 'react';
-import { StoreContext } from '../store';
+import { useContext, useState } from "react";
+import { StoreContext } from "../store";
+import Cookies from "universal-cookie";
 
 const LoginForm = () => {
   const { dispatch } = useContext(StoreContext);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setMail] = useState("");
+  const [password, setPassword] = useState("");
+  const cookies = new Cookies();
 
-  const tryLogin = () => {
-    dispatch({
-      type: 'LOGIN',
-      payload: {
-        username,
-        password
+  const tryLogin = async () => {
+    console.log("trylogin ");
+
+    const result = await fetch("http://localhost:3000/user/login/auth", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: {
+        "Content-Type": "application/json",
       },
     });
+
+    const response = await result.json();
+    const { token } = response;
+
+    cookies.set("token", token);
+
+    console.log(response);
+
+    const display = await fetch("http://localhost:3000/profile/me", {
+      method: "GET",
+      headers: { authorization: `Bearer ${token}` },
+    });
+
+    const responseDisplay = await display.json();
+
+    console.log(responseDisplay);
+    
   };
 
   return (
@@ -26,20 +47,20 @@ const LoginForm = () => {
               className="input-group-text justify-content-center"
               id="username-prefix"
               style={{
-                width: '2.5rem',
+                width: "2.5rem",
               }}
             >
               @
             </span>
             <input
               type="text"
-              name="username"
+              name="mail"
               className="form-control"
               placeholder="Username"
               aria-label="Username"
               aria-describedby="username-prefix"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              value={email}
+              onChange={(event) => setMail(event.target.value)}
             />
           </div>
           <div className="input-group mb-3">
@@ -47,7 +68,7 @@ const LoginForm = () => {
               className="input-group-text justify-content-center"
               id="password-prefix"
               style={{
-                width: '2.5rem',
+                width: "2.5rem",
               }}
             >
               *
@@ -76,6 +97,6 @@ const LoginForm = () => {
       </div>
     </>
   );
-}
+};
 
 export default LoginForm;

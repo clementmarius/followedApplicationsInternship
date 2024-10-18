@@ -6,7 +6,7 @@ const loginUser = async (req, res) => {
     try {
         const { token, user } = await authService.loginUserService(email, password);
         
-        res.cookie('token', token, {
+        /* res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 3600000,
@@ -24,12 +24,14 @@ const loginUser = async (req, res) => {
             maxAge: 3600000,
             sameSite: 'Strict'
         });
-
+ */
         res.json({
-           /*  token, */
+            token,
             message: "Connexion réussie"
         });
         console.log(`User ${user.email} logged in successfully.`);
+        console.log('Token : ', token);
+        
 
     } catch (error) {
         console.error('Login error:', error);
