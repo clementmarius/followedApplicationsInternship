@@ -3,7 +3,8 @@ require('dotenv').config();
 
 const user = {
     userId: 8, 
-    email: 'test11@example.com' 
+    email: 'test11@example.com' ,
+    roles: ['USER', 'ADMIN']
 };
 
 if (!process.env.JWT_SECRET) {

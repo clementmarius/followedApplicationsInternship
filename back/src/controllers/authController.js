@@ -5,22 +5,40 @@ const loginUser = async (req, res) => {
 
     try {
         const { token, user } = await authService.loginUserService(email, password);
+        
+        /* res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 3600000,
+            sameSite: 'Strict'
+        });
+
+        res.cookie('user', JSON.stringify({
+            id: user.id,
+            email: user.email,
+            firstName: user.profile.firstName,
+            lastName: user.profile.lastName,
+        }), {
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === 'production', 
+            maxAge: 3600000,
+            sameSite: 'Strict'
+        });
+ */
         res.json({
             token,
-            user: {
-                id: user.id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName
-            }
+            message: "Connexion réussie"
         });
         console.log(`User ${user.email} logged in successfully.`);
+        console.log('Token : ', token);
+        
 
     } catch (error) {
         console.error('Login error:', error);
         res.status(401).json({ message: error.message });
     }
 };
+
 
 const logOutUser = async (req, res) => {
     const authHeader = req.headers.authorization;

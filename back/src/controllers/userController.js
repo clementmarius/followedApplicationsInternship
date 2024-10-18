@@ -25,6 +25,22 @@ async function createUser(req, res) {
     }
 }
 
+async function getCurrentUser(req, res) {
+    const userId = req.user.userId;  
+    try {
+        const currentUser = await userService.getCurrentUser(userId);
+
+        const { password, ...userWithoutPassword } = currentUser;
+
+        res.status(200).json(userWithoutPassword);
+        console.log('Current user retrieved:', currentUser);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+
 async function findUserById(req, res) {
     const userId = parseInt(req.params.id);
 
@@ -95,5 +111,6 @@ module.exports = {
     findAllUserById,
     updateUser,
     removeUser,
-    initializeAdminUser
+    initializeAdminUser,
+    getCurrentUser
 };

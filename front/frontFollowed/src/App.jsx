@@ -1,34 +1,37 @@
-import './index.css';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useContext } from 'react';
+import { StoreContext } from './store';
 
-function App() {
-  const [count, setCount] = useState(0);
-  const [array, setArray] = useState([]);
+import List from './components/List';
+import Form from './components/Form';
+import Header from './components/Header';
+import LoginForm from './components/Login';
 
-  const fetchApi = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/api");
-      setArray(response.data.fruits);
-      console.log(response.data.fruits);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des données : ", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchApi();
-  }, []);
-
+const App = () => {
+  const { state } = useContext(StoreContext);
   return (
-    <div>
-      {array.map((fruit, index) => (
-        <div key={index}>
-          <p>{fruit}</p>
-          <br />
-        </div>
-      ))}
-    </div>
+    <>
+      <Header />
+      <div className="container">
+        {state.auth.isLoggedIn ? (
+          <>
+            <div className="card px-3">
+              <div className="card-body">
+                <Form />
+                <List />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <p>
+              Example app with login system using cookies. To login, use any
+              username and the password <kbd>abcdef</kbd>
+            </p>
+            <LoginForm />
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
