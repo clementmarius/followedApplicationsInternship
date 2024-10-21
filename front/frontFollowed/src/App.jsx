@@ -5,6 +5,7 @@ import List from './components/List';
 import Form from './components/Form';
 import Header from './components/Header';
 import LoginForm from './components/Login';
+import landingPage from './components/landingPage';
 
 const App = () => {
   const { state } = useContext(StoreContext);
