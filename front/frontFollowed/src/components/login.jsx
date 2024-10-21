@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { StoreContext } from "../store";
-import Cookies from "universal-cookie";
+/* import { StoreContext } from "../store";
+ */import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const { dispatch } = useContext(StoreContext);
-  const [email, setMail] = useState("");
+/*   const { dispatch } = useContext(StoreContext);
+ */  const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
   const cookies = new Cookies();
 
