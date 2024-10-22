@@ -1,42 +1,27 @@
-import { useContext } from 'react';
-import { StoreContext } from './store';
-import { Routes, Route } from 'react-router-dom';
+import { useContext } from "react";
+import { StoreContext } from "./store";
+import { Routes, Route } from "react-router-dom";
 
-import List from './components/List';
-import Form from './components/Form';
-import Header from './components/Header';
-import LoginForm from './components/Login';
-import landingPage from './components/landingPage'
-import Dashboard from './components/landingPage';
+import Header from "./components/Header";
+import LoginForm from "./components/Login";
+import LandingPage from "./components/landingPage";
 
 const App = () => {
-  const { state } = useContext(StoreContext);
+  const { state } = useContext(StoreContext); // Récupérer l'état de l'authentification
 
   return (
     <>
-      <Header />
+      <Header /> {/* Affichage du header pour toutes les pages */}
       <div className="container">
-       <Routes>
-          {/* Si l'utilisateur est connecté, montrer le formulaire et la liste */}
-          {state.auth.isLoggedIn ? (
+        <Routes>
+          {state.auth.isLoggedIn ? ( // Si l'utilisateur est connecté
             <>
-              <Route
-                path="/"
-                element={
-                  <div className="card px-3">
-                    <div className="card-body">
-                      <Form />
-                      <List />
-                      <Dashboard/>
-                    </div>
-                  </div>
-                }
-              />
+              {/* Redirection vers la landing page */}
               <Route path="/landingPage" element={<LandingPage />} />
             </>
           ) : (
             <>
-              {/* Si l'utilisateur n'est pas connecté, montrer le login */}
+              {/* Formulaire de connexion si non connecté */}
               <Route
                 path="/"
                 element={
@@ -55,6 +40,6 @@ const App = () => {
       </div>
     </>
   );
-}
+};
 
 export default App;
