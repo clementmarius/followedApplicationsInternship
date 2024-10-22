@@ -16,7 +16,6 @@ const App = () => {
       <Header />
       <div className="container">
        <Routes>
-          {/* Si l'utilisateur est connecté, montrer le formulaire et la liste */}
           {state.auth.isLoggedIn ? (
             <>
               <Route
@@ -30,12 +29,10 @@ const App = () => {
                   </div>
                 }
               />
-              {/* Ajouter une route pour landingPage */}
               <Route path="/landingPage" element={<LandingPage />} />
             </>
           ) : (
             <>
-              {/* Si l'utilisateur n'est pas connecté, montrer le login */}
               <Route
                 path="/"
                 element={
