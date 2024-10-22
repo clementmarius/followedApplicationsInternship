@@ -7,6 +7,7 @@ import Form from './components/Form';
 import Header from './components/Header';
 import LoginForm from './components/Login';
 import landingPage from './components/landingPage'
+import Dashboard from './components/landingPage';
 
 const App = () => {
   const { state } = useContext(StoreContext);
@@ -16,6 +17,7 @@ const App = () => {
       <Header />
       <div className="container">
        <Routes>
+          {/* Si l'utilisateur est connecté, montrer le formulaire et la liste */}
           {state.auth.isLoggedIn ? (
             <>
               <Route
@@ -25,6 +27,7 @@ const App = () => {
                     <div className="card-body">
                       <Form />
                       <List />
+                      <Dashboard/>
                     </div>
                   </div>
                 }
@@ -33,6 +36,7 @@ const App = () => {
             </>
           ) : (
             <>
+              {/* Si l'utilisateur n'est pas connecté, montrer le login */}
               <Route
                 path="/"
                 element={
