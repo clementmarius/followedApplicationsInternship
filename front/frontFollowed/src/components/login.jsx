@@ -1,12 +1,9 @@
 import { useContext, useState } from "react";
-/* import { StoreContext } from "../store";
- */
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 const LoginForm = () => {
-  /*   const { dispatch } = useContext(StoreContext);
-   */
   const navigate = useNavigate();
   const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
