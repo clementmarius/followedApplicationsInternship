@@ -28,7 +28,7 @@ const App = () => {
                 element={
                   <>
                     <p>
-                      Example app with login system using cookies. To login, use
+                      To login, use
                       any username and the password <kbd>abcdef</kbd>
                     </p>
                     <LoginForm />
