@@ -36,7 +36,8 @@ const LoginForm = () => {
 
       console.log(responseDisplay);
 
-      navigate("/landingPage");
+      /*       navigate("/landingPage");
+       */
     } else {
       console.error("login failed");
     }
