@@ -9,6 +9,12 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const cookies = new Cookies();
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+    props.onLogin("");
+    navigate("/landingPage");
+  };
+
   const tryLogin = async () => {
     console.log("trylogin ");
 
@@ -33,19 +39,38 @@ const LoginForm = () => {
       });
 
       const responseDisplay = await display.json();
-
       console.log(responseDisplay);
-
-      /*       navigate("/landingPage");
-       */
-    } else {
+/*       navigate("/landingPage");
+ */    } else {
       console.error("login failed");
     }
   };
+};
 
-  return (
-    <>
-      <div className="card">
+return (
+  <>
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={onSubmit}>
+        <div>
+          <label>
+            Username: <input type="text" name="username" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Password: <input type="password" name="password" />
+          </label>
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </>
+);
+
+export default LoginForm;
+{
+  /* <div className="card">
         <div className="card-body">
           <h5 className="card-title">Login</h5>
           <div className="input-group mb-3">
@@ -101,8 +126,5 @@ const LoginForm = () => {
           </div>
         </div>
       </div>
-    </>
-  );
-};
-
-export default LoginForm;
+    </> */
+}
