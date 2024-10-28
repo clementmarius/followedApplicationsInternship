@@ -16,7 +16,7 @@ const App = () => {
         <Routes>
           {state.auth.isLoggedIn ? (
             <>
-              <Route path="/landingPage" element={<landingPage />} />
+              <Route path="/landingPage" element={<LandingPage />} />
             </>
           ) : (
             <>
