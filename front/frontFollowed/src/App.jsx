@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import LoginForm from "./components/Login";
-import Dashboard from "./components/Dashboard"; // Modifiez l'importation si besoin
+import Dashboard from "./components/landingPage"; 
 
 const App = () => {
   const { state } = useContext(StoreContext);
