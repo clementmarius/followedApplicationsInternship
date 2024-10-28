@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { StoreContext } from "./store";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Header from "./components/Header";
 import LoginForm from "./components/Login";
@@ -15,25 +15,22 @@ const App = () => {
       <div className="container">
         <Routes>
           {state.auth.isLoggedIn ? (
-            <>
-              <Route path="/landingPage" element={<LandingPage />} />
-            </>
+            <Route path="/landingPage" element={<LandingPage />} />
           ) : (
-            <>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <p>
-                      To login, use any username and the password{" "}
-                      <kbd>abcdef</kbd>
-                    </p>
-                    <LoginForm />
-                  </>
-                }
-              />
-            </>
+            <Route
+              path="/"
+              element={
+                <>
+                  <p>
+                    Pour vous connecter, utilisez un nom d'utilisateur et le mot de passe <kbd>abcdef</kbd>
+                  </p>
+                  <LoginForm />
+                </>
+              }
+            />
           )}
+          {/* Redirection en cas d'URL incorrecte */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
     </>
