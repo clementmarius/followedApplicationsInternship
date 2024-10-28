@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import displayLandingPage from "./displayLandingPage";
+import displayLandingPage from "./DisplayLandingPage";
 
 const LoginForm = () => {
   const navigate = useNavigate();

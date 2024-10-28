@@ -4,8 +4,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
 import LoginForm from "./components/Login";
-import Dashboard from "./components/landingPage"; 
-import landingPage from "./components/landingPage"; 
+import LandingPage from "./components/LandingPage";
 
 const App = () => {
   const { state } = useContext(StoreContext);
@@ -26,7 +25,8 @@ const App = () => {
                 element={
                   <>
                     <p>
-                      To login, use any username and the password <kbd>abcdef</kbd>
+                      To login, use any username and the password{" "}
+                      <kbd>abcdef</kbd>
                     </p>
                     <LoginForm />
                   </>
