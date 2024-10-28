@@ -2,6 +2,7 @@ import { useState } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import displayLandingPage from "./DisplayLandingPage";
+import Footer from "./Footer";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -27,7 +28,6 @@ const LoginForm = () => {
       cookies.set("token", token);
       console.log("Login successful:", data);
 
-      // Optionally fetch user profile
       const profileResponse = await fetch("http://localhost:3000/profile/me", {
         method: "GET",
         headers: { authorization: `Bearer ${token}` },
@@ -51,9 +51,7 @@ const LoginForm = () => {
             <span
               className="input-group-text justify-content-center"
               id="username-prefix"
-              style={{
-                width: "2.5rem",
-              }}
+              style={{ width: "2.5rem" }}
             >
               @
             </span>
@@ -77,9 +75,7 @@ const LoginForm = () => {
                 <span
                   className="input-group-text justify-content-center"
                   id="password-prefix"
-                  style={{
-                    width: "2.5rem",
-                  }}
+                  style={{ width: "2.5rem" }}
                 >
                   *
                 </span>
@@ -104,6 +100,7 @@ const LoginForm = () => {
           </div>
         </div>
       </div>
+      <Footer /> {/* Ajout du footer ici */}
     </>
   );
 };

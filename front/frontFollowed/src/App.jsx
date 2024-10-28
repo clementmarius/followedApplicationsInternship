@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import LoginForm from "./components/Login";
 import LandingPage from "./components/LandingPage";
+import FooterPage from "./components/FooterPage";
 
 const App = () => {
   const { state } = useContext(StoreContext);
@@ -29,6 +30,9 @@ const App = () => {
               }
             />
           )}
+          {/* Nouvelle route pour FooterPage */}
+          <Route path="/footer" element={<FooterPage />} />
+
           {/* Redirection en cas d'URL incorrecte */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
