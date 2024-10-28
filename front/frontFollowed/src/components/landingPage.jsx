@@ -1,4 +1,4 @@
-const Dashboard = () => {
+const landingPage = () => {
   return (
     <div>
       <p>Welcome to your Dashboard User name and others infos{}</p>
@@ -6,4 +6,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default landingPage;
