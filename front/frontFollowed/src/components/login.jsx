@@ -100,7 +100,7 @@ const LoginForm = () => {
           </div>
         </div>
       </div>
-      <Footer /> {/* Ajout du footer ici */}
+      <Footer />
     </>
   );
 };

@@ -30,10 +30,8 @@ const App = () => {
               }
             />
           )}
-          {/* Nouvelle route pour FooterPage */}
           <Route path="/footer" element={<FooterPage />} />
 
-          {/* Redirection en cas d'URL incorrecte */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>

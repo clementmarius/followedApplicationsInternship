@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer style={{ textAlign: "center", padding: "1rem", borderTop: "1px solid #ddd" }}>
       <p>Footer</p>
-      <button onClick={() => navigate("/footer")}>Voir la page du footer</button> {/* Changer la route */}
+      <button onClick={() => navigate("/footer")}>Voir la page du footer</button>
     </footer>
   );
 };
