@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
+import { StoreContext } from "../store";
 import displayLandingPage from "./DisplayLandingPage";
 import Footer from "./Footer";
+import Contact from "./contact";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const cookies = new Cookies();
+  const {dispatch} = useContext(StoreContext);
 
   const tryLogin = async () => {
     console.log("Trying to log in...");
@@ -35,6 +38,7 @@ const LoginForm = () => {
 
       const profileData = await profileResponse.json();
       console.log("User profile:", profileData);
+      dispatch({ type: "SET_LOGGED_IN", payload: true });
       return true;
     } else {
       console.error("Login failed");
@@ -55,7 +59,11 @@ const LoginForm = () => {
             >
               @
             </span>
-            <form onSubmit={(event) => displayLandingPage(event, navigate, tryLogin)}>
+            <form
+              onSubmit={(event) =>
+                displayLandingPage(event, navigate, tryLogin)
+              }
+            >
               <div>
                 <label>
                   Email:{" "}
@@ -101,6 +109,7 @@ const LoginForm = () => {
         </div>
       </div>
       <Footer />
+      <Contact />
     </>
   );
 };

@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import LoginForm from "./components/Login";
 import LandingPage from "./components/LandingPage";
 import FooterPage from "./components/FooterPage";
+import ContactPage from "./components/ContactPage";
 
 const App = () => {
   const { state } = useContext(StoreContext);
@@ -31,6 +32,7 @@ const App = () => {
             />
           )}
           <Route path="/footer" element={<FooterPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
