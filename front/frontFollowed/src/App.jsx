@@ -1,42 +1,40 @@
 import { useContext } from "react";
 import { StoreContext } from "./store";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Header from "./components/Header";
 import LoginForm from "./components/Login";
-import LandingPage from "./components/landingPage";
+import LandingPage from "./components/LandingPage";
+import FooterPage from "./components/FooterPage";
+import ContactPage from "./components/ContactPage";
 
 const App = () => {
-  const { state } = useContext(StoreContext); // Récupérer l'état de l'authentification
+  const { state } = useContext(StoreContext);
 
   return (
     <>
-      <Header /> {/* Affichage du header pour toutes les pages */}
+      <Header />
       <div className="container">
         <Routes>
-          {state.auth.isLoggedIn ? ( // Si l'utilisateur est connecté
-            <>
-              {/* Redirection vers la landing page */}
-              <Route path="/landingPage" element={<LandingPage />} />
-              <Dashboard />
-            </>
+          {state.auth.isLoggedIn ? (
+            <Route path="/landingPage" element={<LandingPage />} />
           ) : (
-            <>
-              {/* Formulaire de connexion si non connecté */}
-              <Route
-                path="/"
-                element={
-                  <>
-                    <p>
-                      To login, use
-                      any username and the password <kbd>abcdef</kbd>
-                    </p>
-                    <LoginForm />
-                  </>
-                }
-              />
-            </>
+            <Route
+              path="/"
+              element={
+                <>
+                  <p>
+                    Pour vous connecter, utilisez un nom d'utilisateur et le mot de passe <kbd>abcdef</kbd>
+                  </p>
+                  <LoginForm />
+                </>
+              }
+            />
           )}
+          <Route path="/footer" element={<FooterPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
     </>

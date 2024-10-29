@@ -1,18 +1,22 @@
 import { useContext, useState } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import { redirect } from "react-router-dom";
+import { StoreContext } from "../store";
+import displayLandingPage from "./DisplayLandingPage";
+import Footer from "./Footer";
+import Contact from "./contact";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [email, setMail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const cookies = new Cookies();
+  const {dispatch} = useContext(StoreContext);
 
   const tryLogin = async () => {
-    console.log("trylogin ");
+    console.log("Trying to log in...");
 
-    const result = await fetch("http://localhost:3000/user/login/auth", {
+    const response = await fetch("http://localhost:3000/user/login/auth", {
       method: "POST",
       body: JSON.stringify({ email, password }),
       headers: {
@@ -20,25 +24,25 @@ const LoginForm = () => {
       },
     });
 
-    const response = await result.json();
-    const { token } = response;
+    const data = await response.json();
+    const { token } = data;
 
     if (token) {
       cookies.set("token", token);
-      console.log(response);
+      console.log("Login successful:", data);
 
-      const display = await fetch("http://localhost:3000/profile/me", {
+      const profileResponse = await fetch("http://localhost:3000/profile/me", {
         method: "GET",
         headers: { authorization: `Bearer ${token}` },
       });
 
-      const responseDisplay = await display.json();
-
-      console.log(responseDisplay);
-
-      navigate("/landingPage");
+      const profileData = await profileResponse.json();
+      console.log("User profile:", profileData);
+      dispatch({ type: "SET_LOGGED_IN", payload: true });
+      return true;
     } else {
-      console.error("login failed");
+      console.error("Login failed");
+      return false;
     }
   };
 
@@ -46,60 +50,66 @@ const LoginForm = () => {
     <>
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title">Login</h5>
+          <h2 className="card-title">Login</h2>
           <div className="input-group mb-3">
             <span
               className="input-group-text justify-content-center"
               id="username-prefix"
-              style={{
-                width: "2.5rem",
-              }}
+              style={{ width: "2.5rem" }}
             >
               @
             </span>
-            <input
-              type="text"
-              name="mail"
-              className="form-control"
-              placeholder="Username"
-              aria-label="Username"
-              aria-describedby="username-prefix"
-              value={email}
-              onChange={(event) => setMail(event.target.value)}
-            />
-          </div>
-          <div className="input-group mb-3">
-            <span
-              className="input-group-text justify-content-center"
-              id="password-prefix"
-              style={{
-                width: "2.5rem",
-              }}
+            <form
+              onSubmit={(event) =>
+                displayLandingPage(event, navigate, tryLogin)
+              }
             >
-              *
-            </span>
-            <input
-              type="password"
-              name="password"
-              className="form-control"
-              aria-describedby="password-prefix"
-              placeholder="Password..."
-              aria-label="Password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
-          <div className="d-grid gap-2">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={tryLogin}
-            >
-              Login
-            </button>
+              <div>
+                <label>
+                  Email:{" "}
+                  <input
+                    type="text"
+                    name="mail"
+                    className="form-control"
+                    placeholder="Username"
+                    aria-label="Username"
+                    aria-describedby="username-prefix"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </label>
+              </div>
+              <div className="input-group mb-3">
+                <span
+                  className="input-group-text justify-content-center"
+                  id="password-prefix"
+                  style={{ width: "2.5rem" }}
+                >
+                  *
+                </span>
+                <div>
+                  <label>
+                    Password:{" "}
+                    <input
+                      type="password"
+                      name="password"
+                      className="form-control"
+                      aria-describedby="password-prefix"
+                      placeholder="Password..."
+                      aria-label="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </label>
+                </div>
+              </div>
+              <button type="submit">Login</button>
+            </form>
           </div>
         </div>
       </div>
+      <Footer />
+      <Contact />
     </>
   );
 };
