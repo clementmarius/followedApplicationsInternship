@@ -2,18 +2,14 @@ import { useContext } from "react";
 import { StoreContext } from "./store";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Header from "./components/Header";
 import LoginForm from "./components/Login";
 import LandingPage from "./components/LandingPage";
-import FooterPage from "./components/FooterPage";
-import ContactPage from "./components/ContactPage";
 
 const App = () => {
   const { state } = useContext(StoreContext);
 
   return (
     <>
-      <Header />
       <div className="container">
         <Routes>
           {state.auth.isLoggedIn ? (
@@ -31,8 +27,6 @@ const App = () => {
               }
             />
           )}
-          <Route path="/footer" element={<FooterPage />} />
-          <Route path="/contact" element={<ContactPage />} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
