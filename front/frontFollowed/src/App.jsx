@@ -5,7 +5,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 /* import LoginForm from "./components/Login";
 import LandingPage from "./components/LandingPage"; */
 import CounterApp from "./components/Counter";
-import LoginForm from "./components/Login";
+/* import LoginForm from "./components/Login";
+ */import LoginButton from "./components/LoginButton";
 
 /* const App = () => {
   const { state } = useContext(StoreContext);
@@ -41,9 +42,10 @@ function App() {
   return <CounterApp />;
 }
 
-function Login() {
-  return <LoginForm />;
+function LoginFromHome() {
+  return <LoginButton />;
 }
 
+
 export default App;
-Login;
+LoginFromHome;

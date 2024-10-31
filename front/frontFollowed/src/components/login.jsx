@@ -1,9 +1,6 @@
-import { useState } from "react";
+/* import { useState } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import Footer from "./Footer";
-import Contact from "./Contact"; // Assurez-vous que le chemin est correct
-
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -88,10 +85,9 @@ const LoginForm = () => {
           </form>
         </div>
       </div>
-      <Footer />
-      <Contact />
     </>
   );
 };
 
 export default LoginForm;
+ */
