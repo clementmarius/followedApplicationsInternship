@@ -2,10 +2,12 @@ import { useContext } from "react";
 import { StoreContext } from "./store";
 import { Routes, Route, Navigate } from "react-router-dom";
 
+/* import LoginForm from "./components/Login";
+import LandingPage from "./components/LandingPage"; */
+import CounterApp from "./components/Counter";
 import LoginForm from "./components/Login";
-import LandingPage from "./components/LandingPage";
 
-const App = () => {
+/* const App = () => {
   const { state } = useContext(StoreContext);
 
   return (
@@ -33,6 +35,15 @@ const App = () => {
       </div>
     </>
   );
-};
+}; */
+
+function App() {
+  return <CounterApp />;
+}
+
+function Login() {
+  return <LoginForm />;
+}
 
 export default App;
+Login;
