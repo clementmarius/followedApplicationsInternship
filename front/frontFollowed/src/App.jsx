@@ -4,6 +4,7 @@ import { Routes, Route, Link, NavLink, Outlet } from "react-router-dom";
 import LoginButton from "./components/LoginButton";
 import RegisterButton from "./components/RegisterButton";
 import { Single } from "./pages/RegisterPage";
+import LoginForm from "./pages/LoginPage";
 
 function Root() {
   return (
@@ -25,7 +26,11 @@ function Root() {
 function App() {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen space-y-4 bg-gray-100">
-      <LoginButton />
+      <Link to="/login">
+            <LoginButton />
+      </Link>
+
+
       <Link to="/register">
         <RegisterButton />
       </Link>
@@ -36,6 +41,7 @@ function App() {
           <Route path="contact" element={<div className="text-center">Contact</div>} />
         </Route>
         <Route path="/register" element={<Single />} />
+        <Route path="/login" element={<LoginForm />} />
       </Routes>
     </div>
   );

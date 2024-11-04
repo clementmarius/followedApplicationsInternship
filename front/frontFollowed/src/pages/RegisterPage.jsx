@@ -5,7 +5,7 @@ export function Single () {
 
    return <div>
       <h1>
-         Register Page
+         Register Page || Work in progress
       </h1>
    </div>
 }
