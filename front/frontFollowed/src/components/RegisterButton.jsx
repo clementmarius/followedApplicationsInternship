@@ -9,24 +9,24 @@ const Button = ({ children, className, onClick }) => {
   );
 };
 
-const LoginButton = () => {
+const RegisterButton = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log("Button was clicked!");
-    navigate("loginPage");
+    console.log("Register button was clicked!");
+    navigate("registerPage");
   };
 
   return (
     <div>
-     <Button
-      onClick={handleClick}
-      className="bg-blue-500 text-white hover:bg-blue-600"
-    >
-      Login Page
-    </Button> 
+      <Button
+        onClick={handleClick}
+        className="bg-amber-500 text-white hover:bg-amber-600"
+      >
+        Register Page
+      </Button>
     </div>
   );
 };
 
-export default LoginButton;
+export default RegisterButton;
