@@ -1,17 +1,12 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import { StoreContext } from "../store";
-import displayLandingPage from "./DisplayLandingPage";
-import Footer from "./Footer";
-import Contact from "./contact";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const cookies = new Cookies();
-  const {dispatch} = useContext(StoreContext);
 
   const tryLogin = async () => {
     console.log("Trying to log in...");
@@ -31,6 +26,7 @@ const LoginForm = () => {
       cookies.set("token", token);
       console.log("Login successful:", data);
 
+      // Récupérer les informations de profil
       const profileResponse = await fetch("http://localhost:3000/profile/me", {
         method: "GET",
         headers: { authorization: `Bearer ${token}` },
@@ -38,11 +34,19 @@ const LoginForm = () => {
 
       const profileData = await profileResponse.json();
       console.log("User profile:", profileData);
-      dispatch({ type: "SET_LOGGED_IN", payload: true });
+
       return true;
     } else {
       console.error("Login failed");
       return false;
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const success = await tryLogin();
+    if (success) {
+      navigate("/landingPage");
     }
   };
 
@@ -51,65 +55,36 @@ const LoginForm = () => {
       <div className="card">
         <div className="card-body">
           <h2 className="card-title">Login</h2>
-          <div className="input-group mb-3">
-            <span
-              className="input-group-text justify-content-center"
-              id="username-prefix"
-              style={{ width: "2.5rem" }}
-            >
-              @
-            </span>
-            <form
-              onSubmit={(event) =>
-                displayLandingPage(event, navigate, tryLogin)
-              }
-            >
-              <div>
-                <label>
-                  Email:{" "}
-                  <input
-                    type="text"
-                    name="mail"
-                    className="form-control"
-                    placeholder="Username"
-                    aria-label="Username"
-                    aria-describedby="username-prefix"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div className="input-group mb-3">
-                <span
-                  className="input-group-text justify-content-center"
-                  id="password-prefix"
-                  style={{ width: "2.5rem" }}
-                >
-                  *
-                </span>
-                <div>
-                  <label>
-                    Password:{" "}
-                    <input
-                      type="password"
-                      name="password"
-                      className="form-control"
-                      aria-describedby="password-prefix"
-                      placeholder="Password..."
-                      aria-label="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </label>
-                </div>
-              </div>
-              <button type="submit">Login</button>
-            </form>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="input-group mb-3">
+              <span className="input-group-text" id="username-prefix">@</span>
+              <input
+                type="text"
+                name="mail"
+                className="form-control"
+                placeholder="Username"
+                aria-label="Username"
+                aria-describedby="username-prefix"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="input-group mb-3">
+              <span className="input-group-text" id="password-prefix">*</span>
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                placeholder="Password..."
+                aria-label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <button type="submit">Login</button>
+          </form>
         </div>
       </div>
-      <Footer />
-      <Contact />
     </>
   );
 };
