@@ -10,7 +10,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <TodoStoreProvider>
     <Router>
       <App />
-      <LoginButton/>
     </Router>
   </TodoStoreProvider>
 );

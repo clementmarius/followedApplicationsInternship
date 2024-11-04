@@ -1,7 +1,6 @@
-// Button.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-// Composant Button avec fonction de gestion du clic intégrée
 const Button = ({ children, style, onClick }) => {
   return (
     <button style={style} onClick={onClick}>
@@ -10,18 +9,22 @@ const Button = ({ children, style, onClick }) => {
   );
 };
 
-// Composant exporté LoginButton qui utilise le composant Button
 const LoginButton = () => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
     console.log("Button was clicked!");
+    navigate("loginPage");
   };
 
   return (
-    <Button onClick={handleClick} style={{ backgroundColor: "blue", color: "white" }}>
-      Click Me!
+    <Button
+      onClick={handleClick}
+      style={{ backgroundColor: "blue", color: "white" }}
+    >
+      Login Page
     </Button>
   );
 };
 
 export default LoginButton;
-
