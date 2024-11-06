@@ -57,7 +57,7 @@ const LoginForm = () => {
           <h2 className="card-title">Login</h2>
           <form onSubmit={handleSubmit}>
             <div className="input-group mb-3">
-              <span className="input-group-text" id="username-prefix">@</span>
+              <span className="input-group-text" id="username-prefix">Mail</span>
               <input
                 type="text"
                 name="mail"
@@ -70,7 +70,7 @@ const LoginForm = () => {
               />
             </div>
             <div className="input-group mb-3">
-              <span className="input-group-text" id="password-prefix">*</span>
+              <span className="input-group-text" id="password-prefix">Password</span>
               <input
                 type="password"
                 name="password"
