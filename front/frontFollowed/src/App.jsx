@@ -5,6 +5,7 @@ import LoginButton from "./components/LoginButton";
 import RegisterButton from "./components/RegisterButton";
 import { Single } from "./pages/RegisterPage";
 import LoginForm from "./pages/LoginPage";
+import LandingPage from "./pages/LandingPage";
 
 function Root() {
   return (
@@ -42,6 +43,7 @@ function App() {
         </Route>
         <Route path="/register" element={<Single />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/landingPage" element={<LandingPage />} />
       </Routes>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+/* import React, { useContext } from "react";
 import { StoreContext } from "../store";
 
 const LandingPage = () => {
@@ -14,6 +14,19 @@ const LandingPage = () => {
         <p><strong>Name :</strong> {profile?.lastName}</p>
         <p><strong>Mail :</strong> {profile?.email}</p>
       </div>
+    </div>
+  );
+};
+
+export default LandingPage;
+ */
+
+
+// LandingPage.jsx
+const LandingPage = () => {
+  return (
+    <div>
+      <h1>Welcome on your account</h1>
     </div>
   );
 };
