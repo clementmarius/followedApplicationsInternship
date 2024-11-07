@@ -27,6 +27,7 @@ const LandingPage = () => {
   return (
     <div>
       <h1>Welcome on your account</h1>
+      <p>You are loggedin to your account.</p>
       <h2>Your personnal informations</h2>
     </div>
   );
