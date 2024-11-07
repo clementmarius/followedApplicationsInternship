@@ -30,7 +30,7 @@ const LandingPage = () => {
       <p>You are loggedin to your account.</p>
       <h2>Your personnal informations</h2>
       <p><strong>Name :</strong> {profile?.lastName}</p>
-
+      <p><strong>Mail :</strong> {profile?.email}</p>
     </div>
   );
 };
