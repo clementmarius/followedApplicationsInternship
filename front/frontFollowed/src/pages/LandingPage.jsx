@@ -1,25 +1,4 @@
-/* import React, { useContext } from "react";
-import { StoreContext } from "../store";
-
-const LandingPage = () => {
-  const { state } = useContext(StoreContext);
-  const { profile } = state.auth;
-
-  return (
-    <div>
-      <h1>Welcome, {profile?.firstName || "Utilisateur"} !</h1>
-      <p>You are loggedin to your account.</p>
-      <div>
-        <h2>Your personnal informations</h2>
-        <p><strong>Name :</strong> {profile?.lastName}</p>
-        <p><strong>Mail :</strong> {profile?.email}</p>
-      </div>
-    </div>
-  );
-};
-
-export default LandingPage;
- */
+//Utilisation du fetch pour importer la route profile/me 
 
 
 // LandingPage.jsx
