@@ -4,8 +4,10 @@
 // LandingPage.jsx
 const LandingPage = () => {
 
-
+const displayProfile = async () => {
   
+}
+
   return (
     <div>
       <h1>Welcome on your account</h1>
