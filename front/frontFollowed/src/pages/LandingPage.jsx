@@ -5,6 +5,7 @@
 const LandingPage = () => {
 
 const displayProfile = async () => {
+  console.log("display ");
   
 }
 
