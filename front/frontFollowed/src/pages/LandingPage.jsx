@@ -11,7 +11,7 @@ const displayProfile = async () => {
 
   return (
     <div>
-      <h1>Welcome on your account</h1>
+      <h1>Welcome on your user account</h1>
       <p>You are logged in to your account.</p>
       <h2>Your personnal informations</h2>
       <p><strong>Name :</strong> </p>
