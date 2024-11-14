@@ -18,7 +18,7 @@ const displayProfile = async () => {
       <p><strong>Mail :</strong> </p>
       <p></p>
       <p></p>
-      <p>Coming Back Soon</p>
+      
     </div>
   );
 };
