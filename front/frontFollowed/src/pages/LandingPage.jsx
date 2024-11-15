@@ -8,7 +8,10 @@ const LandingPage = () => {
 
   const displayProfile = async () => {
     console.log("display profile");
-    const response = await fetch()
+    const response = await fetch("http://localhost:3000/profile/me", {
+      method: "GET",
+
+    })
   };
 
   return (
