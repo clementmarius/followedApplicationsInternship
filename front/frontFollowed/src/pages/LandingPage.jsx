@@ -8,6 +8,7 @@ const LandingPage = () => {
 
   const displayProfile = async () => {
     console.log("display profile");
+    const response = await fetch()
   };
 
   return (
