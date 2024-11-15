@@ -11,9 +11,11 @@ const LandingPage = () => {
     console.log("display profile");
     const response = await fetch("http://localhost:3000/profile/me", {
       method: "GET",
-      body
-
-    })
+      body: JSON.stringify({ name, email }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   return (
