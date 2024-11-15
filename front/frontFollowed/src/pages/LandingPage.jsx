@@ -4,12 +4,14 @@ import { useState } from "react";
 
 // LandingPage.jsx
 const LandingPage = () => {
-  const [name, email] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const displayProfile = async () => {
     console.log("display profile");
     const response = await fetch("http://localhost:3000/profile/me", {
       method: "GET",
+      body
 
     })
   };
