@@ -23,7 +23,7 @@ const LandingPage = () => {
       <h1>Welcome on your user account</h1>
       <p>You are logged in to your account.</p>
       <h2>Your personnal informations</h2>
-      <p>
+      <p value={email}>
         <strong>Name :</strong>{" "}
       </p>
       <p>
