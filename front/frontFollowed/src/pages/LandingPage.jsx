@@ -22,6 +22,7 @@ const LandingPage = () => {
     <div>
       <h1>Welcome on your user account</h1>
       <p>You are logged in to your account.</p>
+      <br />
       <h2>Your personnal informations</h2>
       <p value={name}
       onChange={(e) => setName(e.target.value)}
