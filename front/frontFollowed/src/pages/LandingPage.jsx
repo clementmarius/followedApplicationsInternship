@@ -32,7 +32,7 @@ const LandingPage = () => {
         <strong>Name ?:</strong>{" "}
       </p>
       <p>
-        <strong>Mail :</strong>{" "}
+        <strong>Mail ?:</strong>{" "}
       </p>
     </div>
   );
