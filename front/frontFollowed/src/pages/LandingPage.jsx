@@ -29,7 +29,7 @@ const LandingPage = () => {
       <p value={name}
       onChange={(e) => setName(e.target.value)}
       >
-        <strong>Name :</strong>{" "}
+        <strong>Name ?:</strong>{" "}
       </p>
       <p>
         <strong>Mail :</strong>{" "}
