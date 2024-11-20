@@ -25,7 +25,6 @@ const LandingPage = () => {
       <br />
       <p>More coming soon</p>
       <br />
-      <br />
       <h2>Your personnal informations</h2>
       <p value={name}
       onChange={(e) => setName(e.target.value)}
